@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "grid.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    int gridsize;
+    Grid* grid;
 };
 
 #endif // MAINWINDOW_H
