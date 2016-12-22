@@ -1,17 +1,16 @@
 #include "grid.h"
 
 #include <QDebug>
+#include <vector>
 
 Grid::Grid(unsigned size)
 {
-    unsigned *grid[size];
     for(unsigned i = 0; i < size; ++i) {
-        grid[i] = (unsigned*) malloc(size*size*sizeof(unsigned));
-        for (unsigned j = 0; j < size; ++j)
-            grid[i][j] = 0;
+        std::vector<unsigned> row;
+        row.resize(size);
+        grid.push_back(row);
     }
-    memcpy(this->grid, grid, sizeof(grid));
-    qDebug() << "Grid created, size : " << sizeof(grid)/ sizeof(grid[0]);
+    qDebug() << "Grid created, size : " << this->size();
 }
 
 unsigned Grid::get(unsigned x, unsigned y)
@@ -27,7 +26,7 @@ bool Grid::assign(unsigned x, unsigned y, unsigned value)
     return true;
 }
 
-unsigned Grid::length()
+unsigned Grid::size()
 {
-    return sizeof(grid) / sizeof(grid[0]);
+    return grid.size();
 }

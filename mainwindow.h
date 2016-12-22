@@ -18,6 +18,8 @@ public:
     ~MainWindow();
 
 private:
+    void setGridView();
+
     Ui::MainWindow *ui;
     Grid* grid;
 };
