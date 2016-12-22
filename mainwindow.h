@@ -17,8 +17,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void go();
+
 private:
     void setGridView();
+    void fillGrid();
 
     Ui::MainWindow *ui;
     Grid* grid;

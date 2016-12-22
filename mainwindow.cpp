@@ -15,12 +15,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     setGridView();
+
+    QObject::connect(ui->goButton, SIGNAL(clicked()), this, SLOT(go()));
     this->show();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::go()
+{
+    fillGrid();
 }
 
 void MainWindow::setGridView()
@@ -30,7 +37,8 @@ void MainWindow::setGridView()
 
     unsigned gridSize = grid->size();
 
-    for (unsigned y = 0; y < gridSize; ++y) {
+    unsigned y = 0;
+    while(true) {
         unsigned x = 0;
         while (true) {
             QSpinBox* caseWidget = new QSpinBox();
@@ -46,10 +54,26 @@ void MainWindow::setGridView()
             ui->gridLayout->addWidget(operatorWidget, 2*y, (x-1)*2+1);
         }
 
+        if (y++ == gridSize-1)
+            break;
+
         for (unsigned xBox = 0; xBox < gridSize; ++xBox) {
             QComboBox* operatorWidget = new QComboBox();
             operatorWidget->insertItems(1, opList);
-            ui->gridLayout->addWidget(operatorWidget, 2*y+1, xBox*2);
+            ui->gridLayout->addWidget(operatorWidget, 2*(y-1)+1, xBox*2);
         }
     }
+}
+
+void MainWindow::fillGrid()
+{
+    unsigned gridSize = grid->size();
+    for (unsigned x = 0; x < gridSize; ++x) {
+        for (unsigned y = 0; y < gridSize; ++y) {
+            QSpinBox* input = (QSpinBox*) ui->gridLayout->itemAtPosition(y*2, x*2)->widget();
+            unsigned value = input->value();
+            grid->assign(x, y, value);
+        }
+    }
+    qDebug().noquote() << "Grid filled :\n" + *grid;
 }
