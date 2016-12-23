@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "grid.h"
+#include "constraint.h"
+#include<vector>
 
 namespace Ui {
 class MainWindow;
@@ -22,12 +24,17 @@ public slots:
 
 private:
     static MainWindow* instance;
+    void clean();
     void setGridView();
     void fillGrid();
     void createConstraints();
+    void createConstraintsHorizontal();
+    void createConstraintsVertical();
 
     Ui::MainWindow *ui;
+    unsigned gridSize;
     Grid* grid;
+    std::vector<Constraint> constraints;
 };
 
 #endif // MAINWINDOW_H
