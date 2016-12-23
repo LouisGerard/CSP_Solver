@@ -6,6 +6,8 @@
 #include <QSpinBox>
 #include <QComboBox>
 
+MainWindow* MainWindow::instance = nullptr;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -18,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->goButton, SIGNAL(clicked()), this, SLOT(go()));
     this->show();
+    instance = this;
 }
 
 MainWindow::~MainWindow()
@@ -25,9 +28,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+MainWindow* MainWindow::getInstance()
+{
+    return instance;
+}
+
 void MainWindow::go()
 {
+    setEnabled(false);
     fillGrid();
+    createConstraints();
+    setEnabled(true);
 }
 
 void MainWindow::setGridView()
@@ -76,4 +87,9 @@ void MainWindow::fillGrid()
         }
     }
     qDebug().noquote() << "Grid filled :\n" + *grid;
+}
+
+void MainWindow::createConstraints()
+{
+
 }

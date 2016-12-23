@@ -12,8 +12,8 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    //todo Singleton
 public:
+    static MainWindow* getInstance();
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -21,8 +21,10 @@ public slots:
     void go();
 
 private:
+    static MainWindow* instance;
     void setGridView();
     void fillGrid();
+    void createConstraints();
 
     Ui::MainWindow *ui;
     Grid* grid;
