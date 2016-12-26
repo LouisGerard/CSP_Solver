@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "grid.h"
-#include "constraint.h"
+#include "constraint_superiority.h"
+#include "constraint_uniqueness.h"
+
+#include "file.h"
 #include <utility>
 #include <QInputDialog>
 #include <QDebug>
@@ -15,7 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     gridSize = QInputDialog::getInt(this, "Taille de la grille", "Entrez une taille : ", 5, 4, 10);
-    grid = new Grid(gridSize);
+
+    File f("C:\\Users\\louis\\Desktop\\futoshiki\\grille1_6x6.fut");
+    f.parseGrid();
 
     ui->setupUi(this);
     setGridView();
@@ -27,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete grid;
     delete ui;
 }
 
@@ -98,14 +104,15 @@ void MainWindow::fillGrid()
 
 void MainWindow::createConstraints()
 {
-    createConstraintsHorizontal();
-    createConstraintsVertical();
+    createConstraintsSuperiorityHorizontal();
+    createConstraintsSuperiorityVertical();
+    createConstraintsUniqueness();
     qDebug() << "Constraints created :";
-    for (Constraint constraint : constraints)
-        qDebug() << constraint;
+    for (unsigned i = 0; i < constraints.size(); ++i)
+        qDebug() << *constraints[i];
 }
 
-void MainWindow::createConstraintsHorizontal()
+void MainWindow::createConstraintsSuperiorityHorizontal()
 {
     for (unsigned x = 0; x < gridSize-1; ++x) {
         for (unsigned y = 0; y < gridSize; ++y) {
@@ -116,14 +123,14 @@ void MainWindow::createConstraintsHorizontal()
             QString value = input->currentText();
 
             if (value == ">")
-                constraints.push_back(Constraint(leftPos, rightPos));
+                constraints.push_back(new ConstraintSuperiority(leftPos, rightPos));
             else if (value == "<")
-                constraints.push_back(Constraint(rightPos, leftPos));
+                constraints.push_back(new ConstraintSuperiority(rightPos, leftPos));
         }
     }
 }
 
-void MainWindow::createConstraintsVertical()
+void MainWindow::createConstraintsSuperiorityVertical()
 {
     for (unsigned x = 0; x < gridSize; ++x) {
         for (unsigned y = 0; y < gridSize-1; ++y) {
@@ -134,9 +141,15 @@ void MainWindow::createConstraintsVertical()
             QString value = input->currentText();
 
             if (value == ">")
-                constraints.push_back(Constraint(topPos, bottomPos));
+                constraints.push_back(new ConstraintSuperiority(topPos, bottomPos));
             else if (value == "<")
-                constraints.push_back(Constraint(bottomPos, topPos));
+                constraints.push_back(new ConstraintSuperiority(bottomPos, topPos));
         }
     }
+}
+
+void MainWindow::createConstraintsUniqueness()
+{
+    for (unsigned i = 0; i < gridSize; ++i)
+        constraints.push_back(new ConstraintUniqueness(i));
 }

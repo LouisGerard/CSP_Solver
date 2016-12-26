@@ -28,13 +28,14 @@ private:
     void setGridView();
     void fillGrid();
     void createConstraints();
-    void createConstraintsHorizontal();
-    void createConstraintsVertical();
+    void createConstraintsSuperiorityHorizontal();
+    void createConstraintsSuperiorityVertical();
+    void createConstraintsUniqueness();
 
     Ui::MainWindow *ui;
     unsigned gridSize;
     Grid* grid;
-    std::vector<Constraint> constraints;
+    std::vector<Constraint*> constraints;
 };
 
 #endif // MAINWINDOW_H
