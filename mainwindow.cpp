@@ -25,8 +25,10 @@ MainWindow::MainWindow(QWidget *parent) :
     if (filePath != "") {
         File file(filePath);
         grid = file.parseGrid();
+        //todo if grid == NULL
         gridSize = grid->size();
         //todo parse constraints
+        constraints = file.parseConstraints();
 
         setGridView();
         updateGridView();
