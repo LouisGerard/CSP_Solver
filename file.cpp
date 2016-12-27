@@ -9,7 +9,7 @@ File::File(QString path) :
     path(path)
 {}
 
-Grid File::parseGrid()
+Grid* File::parseGrid()
 {
     if (unparsedData == "") {
         unparsedData = this->read();
@@ -18,14 +18,14 @@ Grid File::parseGrid()
     }
 
     unsigned gridSize = unparsedData.at(0).digitValue();
-    Grid result(gridSize);
+    Grid* result = new Grid(gridSize);
     QString figures = "0123456789";
     unsigned cpt = 0;
 
     for (unsigned i = 2; i < unparsedData.length(); ++i)
         for (unsigned j = 0; j < figures.length(); ++j)
             if (unparsedData.at(i) == figures.at(j)) {
-                result.assign(cpt%gridSize, cpt/gridSize, unparsedData.at(i).digitValue());
+                result->assign(cpt%gridSize, cpt/gridSize, unparsedData.at(i).digitValue());
                 ++cpt;
             }
 

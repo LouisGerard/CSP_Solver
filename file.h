@@ -8,7 +8,7 @@ class File
 {
 public:
     File(QString path);
-    Grid parseGrid();
+    Grid* parseGrid();
 
 private:
     QString read();

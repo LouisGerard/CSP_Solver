@@ -3,7 +3,6 @@
 #include "grid.h"
 #include "constraint_superiority.h"
 #include "constraint_uniqueness.h"
-
 #include "file.h"
 #include <utility>
 #include <QInputDialog>
@@ -17,13 +16,25 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    gridSize = QInputDialog::getInt(this, "Taille de la grille", "Entrez une taille : ", 5, 4, 10);
-
-    File f("C:\\Users\\louis\\Desktop\\futoshiki\\grille1_6x6.fut");
-    f.parseGrid();
-
     ui->setupUi(this);
-    setGridView();
+
+    QString filePath = QInputDialog::getText(this,
+                                             "Ouverture par fichier",
+                                             "Chemin vers le fichier (facultatif) :");
+
+    if (filePath != "") {
+        File file(filePath);
+        grid = file.parseGrid();
+        gridSize = grid->size();
+        //todo parse constraints
+
+        setGridView();
+        updateGridView();
+    }
+    else {
+        gridSize = QInputDialog::getInt(this, "Taille de la grille", "Entrez une taille : ", 5, 4, 10);
+        setGridView();
+    }
 
     QObject::connect(ui->goButton, SIGNAL(clicked()), this, SLOT(go()));
     this->show();
@@ -88,6 +99,17 @@ void MainWindow::setGridView()
             ui->gridLayout->addWidget(operatorWidget, 2*(y-1)+1, xBox*2);
         }
     }
+}
+
+void MainWindow::updateGridView()
+{
+    for (unsigned x = 0; x < gridSize; ++x) {
+        for (unsigned y = 0; y < gridSize; ++y) {
+            QSpinBox* caseWidget = (QSpinBox*) ui->gridLayout->itemAtPosition(y*2, x*2)->widget();
+            caseWidget->setValue(grid->get(x, y));
+        }
+    }
+    qDebug() << "View updated.";
 }
 
 void MainWindow::fillGrid()

@@ -26,6 +26,7 @@ private:
     static MainWindow* instance;
     void clean();
     void setGridView();
+    void updateGridView();
     void fillGrid();
     void createConstraints();
     void createConstraintsSuperiorityHorizontal();
