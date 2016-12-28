@@ -1,5 +1,5 @@
 #include "grid.h"
-
+#include "item.h"
 #include <QDebug>
 #include <vector>
 #include <string>
@@ -7,7 +7,7 @@
 Grid::Grid(unsigned size)
 {
     for(unsigned i = 0; i < size; ++i) {
-        std::vector<unsigned> row;
+        std::vector<Item> row;
         row.resize(size);
         grid.push_back(row);
     }

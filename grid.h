@@ -1,6 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
 
+#include "item.h"
 #include <vector>
 #include <QString>
 
@@ -13,7 +14,7 @@ public:
     unsigned size();
     operator QString() const;
 private:
-    std::vector< std::vector<unsigned> > grid;
+    std::vector< std::vector<Item> > grid;
 };
 
 #endif // GRID_H

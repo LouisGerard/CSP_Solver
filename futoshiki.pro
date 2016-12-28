@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     grid.cpp \
     constraint_superiority.cpp \
     constraint_uniqueness.cpp \
-    file.cpp
+    file.cpp \
+    item.cpp
 
 HEADERS  += mainwindow.h \
     grid.h \
     constraint_superiority.h \
     constraint.h \
     constraint_uniqueness.h \
-    file.h
+    file.h \
+    item.h
 
 FORMS    += mainwindow.ui
