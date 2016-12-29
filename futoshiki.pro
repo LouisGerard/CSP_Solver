@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     constraint_superiority.cpp \
     constraint_uniqueness.cpp \
     file.cpp \
-    item.cpp
+    item.cpp \
+    ai.cpp
 
 HEADERS  += mainwindow.h \
     grid.h \
@@ -26,6 +27,7 @@ HEADERS  += mainwindow.h \
     constraint.h \
     constraint_uniqueness.h \
     file.h \
-    item.h
+    item.h \
+    ai.h
 
 FORMS    += mainwindow.ui

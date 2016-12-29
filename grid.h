@@ -9,7 +9,8 @@ class Grid
 {
 public:
     Grid(unsigned size);
-    unsigned get(unsigned x, unsigned y);
+    Grid(const Grid & cpy);
+    Item get(unsigned x, unsigned y);
     bool assign(unsigned x, unsigned y, unsigned value);
     unsigned size();
     operator QString() const;

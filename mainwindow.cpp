@@ -18,24 +18,27 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QString filePath = QInputDialog::getText(this,
-                                             "Ouverture par fichier",
-                                             "Chemin vers le fichier (facultatif) :");
+    while (true) {
+        QString filePath = QInputDialog::getText(this,
+                                                 "Ouverture par fichier",
+                                                 "Chemin vers le fichier (facultatif) :");
 
-    if (filePath != "") {
-        File file(filePath);
-        grid = file.parseGrid();
-        //todo if grid == NULL
-        gridSize = grid->size();
-        //todo parse constraints
-        constraints = file.parseConstraints();
+        if (filePath != "") {
+            File file(filePath);
+            grid = file.parseGrid();
+            if (grid == NULL)
+                continue;
+            gridSize = grid->size();
+            constraints = file.parseConstraints();
 
-        setGridView();
-        updateGridView();
-    }
-    else {
-        gridSize = QInputDialog::getInt(this, "Taille de la grille", "Entrez une taille : ", 5, 4, 10);
-        setGridView();
+            setGridView();
+            updateGridView();
+        }
+        else {
+            gridSize = QInputDialog::getInt(this, "Taille de la grille", "Entrez une taille : ", 5, 4, 10);
+            setGridView();
+        }
+        break;
     }
 
     QObject::connect(ui->goButton, SIGNAL(clicked()), this, SLOT(go()));

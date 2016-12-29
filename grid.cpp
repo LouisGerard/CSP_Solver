@@ -14,7 +14,12 @@ Grid::Grid(unsigned size)
     qDebug() << "Grid created, size : " << this->size();
 }
 
-unsigned Grid::get(unsigned x, unsigned y)
+Grid::Grid(const Grid & cpy)
+{
+    grid = cpy.grid;
+}
+
+Item Grid::get(unsigned x, unsigned y)
 {
     return grid[x][y];
 }
