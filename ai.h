@@ -13,8 +13,6 @@ public:
     Grid FC();
 
 private:
-    bool isConsistent(Grid * assignment);
-
     Grid const * base;
     std::vector<Constraint*> constraints;
 };

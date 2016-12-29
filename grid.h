@@ -10,9 +10,9 @@ class Grid
 public:
     Grid(unsigned size);
     Grid(const Grid & cpy);
-    Item get(unsigned x, unsigned y);
+    Item get(unsigned x, unsigned y) const;
     bool assign(unsigned x, unsigned y, unsigned value);
-    unsigned size();
+    unsigned size() const;
     operator QString() const;
 private:
     std::vector< std::vector<Item> > grid;

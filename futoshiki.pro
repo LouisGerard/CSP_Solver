@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     constraint_uniqueness.cpp \
     file.cpp \
     item.cpp \
-    ai.cpp
+    ai.cpp \
+    assignment.cpp
 
 HEADERS  += mainwindow.h \
     grid.h \
@@ -28,6 +29,7 @@ HEADERS  += mainwindow.h \
     constraint_uniqueness.h \
     file.h \
     item.h \
-    ai.h
+    ai.h \
+    assignment.h
 
 FORMS    += mainwindow.ui

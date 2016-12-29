@@ -19,7 +19,7 @@ Grid::Grid(const Grid & cpy)
     grid = cpy.grid;
 }
 
-Item Grid::get(unsigned x, unsigned y)
+Item Grid::get(unsigned x, unsigned y) const
 {
     return grid[x][y];
 }
@@ -32,7 +32,7 @@ bool Grid::assign(unsigned x, unsigned y, unsigned value)
     return true;
 }
 
-unsigned Grid::size()
+unsigned Grid::size() const
 {
     return grid.size();
 }

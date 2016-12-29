@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    //todo delete constraints (and clear memory leaks)
     delete grid;
     delete ui;
 }

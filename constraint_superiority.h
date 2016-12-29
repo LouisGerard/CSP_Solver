@@ -9,7 +9,7 @@ class ConstraintSuperiority : public Constraint
 {
 public:
     ConstraintSuperiority(std::pair<unsigned, unsigned> itemSup, std::pair<unsigned, unsigned> itemInf);
-    bool eval(Grid* grid);
+    bool eval(Grid& grid);
 
 
     std::pair<unsigned, unsigned> getItemSup() const;

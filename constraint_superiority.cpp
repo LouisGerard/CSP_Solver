@@ -6,9 +6,9 @@ ConstraintSuperiority::ConstraintSuperiority(std::pair<unsigned, unsigned> item1
     itemSup(item1), itemInf(item2)
 {}
 
-bool ConstraintSuperiority::eval(Grid* grid)
+bool ConstraintSuperiority::eval(Grid& grid)
 {
-    return grid->get(itemSup.first, itemSup.second) > grid->get(itemInf.first, itemInf.second);
+    return grid.get(itemSup.first, itemSup.second) > grid.get(itemInf.first, itemInf.second);
 }
 
 std::pair<unsigned, unsigned> ConstraintSuperiority::getItemSup() const

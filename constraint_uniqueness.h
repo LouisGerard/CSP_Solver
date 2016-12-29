@@ -8,7 +8,7 @@ class ConstraintUniqueness : public Constraint
 public:
     ConstraintUniqueness(unsigned line);
 
-    bool eval(Grid* grid);
+    bool eval(Grid& grid);
     operator QString() const;
 
 

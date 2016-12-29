@@ -6,7 +6,7 @@
 class Constraint
 {
 public:
-    virtual bool eval(Grid* grid) = 0;
+    virtual bool eval(Grid& grid) = 0;
     virtual operator QString() const = 0;
 };
 
