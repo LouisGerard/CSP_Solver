@@ -17,11 +17,9 @@ bool Assignment::isConsistent()
     return true;
 }
 
-void Assignment::assign(unsigned x, unsigned y, unsigned domainIndex)
+void Assignment::next(unsigned x, unsigned y)
 {
-    //todo
-    unsigned assignedValue = grid.get(x, y).getDomain()[domainIndex];
-    grid.assign(x, y, assignedValue);
+
 }
 
 Grid Assignment::getGrid() const

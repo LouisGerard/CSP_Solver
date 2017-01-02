@@ -10,7 +10,7 @@ class Assignment
 public:
     Assignment(const Grid* grid, std::vector<Constraint*> constraints);
     bool isConsistent();
-    void assign(unsigned x, unsigned y, unsigned domainIndex);
+    void next(unsigned x, unsigned y);
 
     Grid getGrid() const;
 

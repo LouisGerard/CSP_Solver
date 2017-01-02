@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     file.cpp \
     item.cpp \
     ai.cpp \
-    assignment.cpp
+    assignment.cpp \
+    basic_heuristic.cpp
 
 HEADERS  += mainwindow.h \
     grid.h \
@@ -30,6 +31,8 @@ HEADERS  += mainwindow.h \
     file.h \
     item.h \
     ai.h \
-    assignment.h
+    assignment.h \
+    heuristic.h \
+    basic_heuristic.h
 
 FORMS    += mainwindow.ui

@@ -4,6 +4,8 @@
 #include "constraint_superiority.h"
 #include "constraint_uniqueness.h"
 #include "file.h"
+
+#include "ai.h"
 #include <utility>
 #include <QInputDialog>
 #include <QDebug>
@@ -48,7 +50,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    //todo delete constraints (and clear memory leaks)
+    for(Constraint* cons : constraints)
+        delete cons;
     delete grid;
     delete ui;
 }

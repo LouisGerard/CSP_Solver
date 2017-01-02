@@ -3,25 +3,28 @@
 #include "grid.h"
 #include "constraint.h"
 #include "assignment.h"
+#include <utility>
 #include <vector>
+#include <QDebug>
 
-AI::AI(Grid * base, std::vector<Constraint*> constraints) :
+AI::AI(Grid * base, std::vector<Constraint*> constraints, Heuristic heuristic) :
     base(base),
-    constraints(constraints)
+    constraints(constraints),
+    heuristic(heuristic)
 {}
 
 Grid AI::BT()
 {
     Assignment assignment(base, constraints);
-    for (unsigned x = 0; x < base->size(); ++x) {
-        for (unsigned y = 0; y < base->size(); ++y) {
-            if (base->get(x, y) != 0)
-                continue;
-            for (unsigned i = 0; i < base->get(x, y).getDomain().size(); ++i) {
-                assignment.assign(x, y, i);
-                if (assignment.isConsistent())
-                    break;
-            }
+    for (std::pair<unsigned, unsigned> pos = heuristic.next();
+         !heuristic.end();
+         pos = heuristic.next) {
+        if (base->get(pos.first, pos.second) != 0)
+            continue;
+        for (unsigned i = 0; i < base->get(pos.first, pos.second).getDomain().size(); ++i) {
+            assignment.assign(pos.first, pos.second, i);
+            if (assignment.isConsistent())
+                break;
         }
     }
     return assignment.getGrid();
