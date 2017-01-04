@@ -18,7 +18,7 @@ public:
 typedef bool (*function)(int,int);
 typedef struct _constraint
 {
-    function * operation;
+    function operation;
     unsigned size;
     int * array;
 } constraint;
@@ -32,7 +32,7 @@ bool function2 (int first, int second)
 {
 }
 
-constraint create_constraint (function * f,unsigned size, int * array)
+constraint create_constraint (function f,unsigned size, int * array)
 {
     constraint constr;
 
