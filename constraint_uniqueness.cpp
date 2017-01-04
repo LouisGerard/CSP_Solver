@@ -26,10 +26,10 @@ bool ConstraintUniqueness::eval(Grid& grid)
     return true;
 }
 
-constraint ConstraintUniqueness::toC()
+constraint * ConstraintUniqueness::toC()
 {
     int gridSize = (int) MainWindow::getInstance()->getGridSize();
-    int gridSizeFac = 1;
+    unsigned gridSizeFac = 1;
     //fractorial
     for (unsigned i = 2; i <= gridSize; ++i)
         gridSizeFac *= i;
@@ -70,8 +70,7 @@ constraint ConstraintUniqueness::toC()
             ++offset;
         }
 
-    constraint result = create_constraint(&compareDifference, gridSizeFac*2-1, array);;
-    return &result;
+    return create_constraint(&compareDifference, gridSizeFac*2-1, array);
 }
 
 ConstraintUniqueness::operator QString() const

@@ -12,8 +12,7 @@ bool ConstraintSuperiority::eval(Grid& grid)
 }
 
 constraint *ConstraintSuperiority::toC() {
-    constraint result = create_constraint(&compareSuperiority, 1, new int[] {itemSup.first, itemSup.second, itemInf.first, itemInf.second});
-    return &result;
+    return create_constraint(&compareSuperiority, 1, new int[] {itemSup.first, itemSup.second, itemInf.first, itemInf.second});
 }
 
 std::pair<unsigned, unsigned> ConstraintSuperiority::getItemSup() const
