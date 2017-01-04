@@ -1,6 +1,8 @@
 #ifndef CONSTRAINT_H
 #define CONSTRAINT_H
 
+#include <stdbool.h>
+
 #include "grid.h"
 
 class Constraint
@@ -42,4 +44,5 @@ constraint create_constraint (function f,unsigned size, int * array)
 
     return constr;
 }
+// constraint t  = create_constraint(&function1,8,new int[]{,,,,,,,};
 #endif // CONSTRAINT_H
