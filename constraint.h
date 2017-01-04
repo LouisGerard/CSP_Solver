@@ -1,6 +1,8 @@
 #ifndef CONSTRAINT_H
 #define CONSTRAINT_H
 
+#include <stdbool.h>
+
 #include "grid.h"
 
 class Constraint
@@ -18,7 +20,7 @@ public:
 typedef bool (*function)(int,int);
 typedef struct _constraint
 {
-    function * operation;
+    function operation;
     unsigned size;
     int * array;
 } constraint;
@@ -33,4 +35,5 @@ constraint create_constraint (function * f, unsigned size, int * array)
 
     return constr;
 }
+
 #endif // CONSTRAINT_H
