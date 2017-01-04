@@ -17,11 +17,6 @@ bool Assignment::isConsistent()
     return true;
 }
 
-void Assignment::next(unsigned x, unsigned y)
-{
-
-}
-
 Grid Assignment::getGrid() const
 {
     return grid;

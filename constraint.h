@@ -14,9 +14,10 @@ public:
 };
 
 //conversion
+
+typedef bool (*function)(int,int);
 typedef struct _constraint
 {
-    typedef bool (*function)(int,int);
     function * operation;
     unsigned size;
     int * array;
