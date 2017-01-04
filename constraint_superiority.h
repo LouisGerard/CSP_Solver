@@ -11,7 +11,6 @@ public:
     ConstraintSuperiority(std::pair<unsigned, unsigned> itemSup, std::pair<unsigned, unsigned> itemInf);
     bool eval(Grid& grid);
     constraint * toC();
-    int cSize();
 
 
     std::pair<unsigned, unsigned> getItemSup() const;
