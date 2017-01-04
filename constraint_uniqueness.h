@@ -10,10 +10,11 @@ public:
 
     bool eval(Grid& grid);
     operator QString() const;
-
+    int* toC();
 
 private:
     unsigned line;
+    unsigned gridSize;
 };
 
 #endif // CONSTRAINT_UNIQUENESS_H

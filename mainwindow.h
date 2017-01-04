@@ -18,6 +18,7 @@ public:
     static MainWindow* getInstance();
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    unsigned getGridSize();
 
 public slots:
     void go();

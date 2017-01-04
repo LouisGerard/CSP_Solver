@@ -11,6 +11,21 @@ bool ConstraintSuperiority::eval(Grid& grid)
     return grid.get(itemSup.first, itemSup.second) > grid.get(itemInf.first, itemInf.second);
 }
 
+int *ConstraintSuperiority::toC()
+{
+    int* result = (int*) malloc(sizeof(int)*6);
+    //size
+    *result = 1;
+    //operation
+    *(result+sizeof(int)) = 1;
+    //items
+    *(result+sizeof(int)*2) = itemSup.first;
+    *(result+sizeof(int)*3) = itemSup.second;
+    *(result+sizeof(int)*4) = itemInf.first;
+    *(result+sizeof(int)*5) = itemInf.second;
+    return result;
+}
+
 std::pair<unsigned, unsigned> ConstraintSuperiority::getItemSup() const
 {
     return itemSup;

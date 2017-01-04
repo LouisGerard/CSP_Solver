@@ -14,6 +14,7 @@ public:
     bool assign(unsigned x, unsigned y, unsigned value);
     unsigned size() const;
     operator QString() const;
+    int* toC() const;
 private:
     std::vector< std::vector<Item> > grid;
 };

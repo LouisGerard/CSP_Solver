@@ -7,26 +7,22 @@
 #include <vector>
 #include <QDebug>
 
-AI::AI(Grid * base, std::vector<Constraint*> constraints, Heuristic heuristic) :
+AI::AI(Grid * base, std::vector<Constraint*> constraints, Heuristic *heuristic) :
     base(base),
     constraints(constraints),
     heuristic(heuristic)
 {}
 
-Grid AI::BT()
+int* AI::BackTrackC()
 {
-    Assignment assignment(base, constraints);
-    for (std::pair<unsigned, unsigned> pos = heuristic.next();
-         !heuristic.end();
-         pos = heuristic.next) {
-        if (base->get(pos.first, pos.second) != 0)
-            continue;
-        for (unsigned i = 0; i < base->get(pos.first, pos.second).getDomain().size(); ++i) {
-            assignment.assign(pos.first, pos.second, i);
-            if (assignment.isConsistent())
-                break;
-        }
-    }
-    return assignment.getGrid();
+    int sizeOfGrid = sizeof(int)*base->size()*base->size();
+    int* grid = (int*) malloc(sizeOfGrid);
+    memcpy(grid, base->toC(),sizeOfGrid);
+
+}
+
+bool AI::isConsistantC(int* grid)
+{
+
 }
 

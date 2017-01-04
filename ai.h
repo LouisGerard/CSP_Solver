@@ -9,14 +9,18 @@
 class AI
 {
 public:
-    AI(Grid * base, std::vector<Constraint*> constraints, Heuristic heuristic);
-    Grid BT();
-    Grid FC();
+    AI(Grid * base, std::vector<Constraint*> constraints, Heuristic* heuristic);
+    Grid BackTrack();
+    int* BackTrackC();
+    Grid ForwardChecking();
+    int* ForwardCheckingC();
+
+    bool isConsistantC(int* grid);
 
 private:
     Grid const * base;
     std::vector<Constraint*> constraints;
-    Heuristic heuristic;
+    Heuristic* heuristic;
 };
 
 #endif // AI_H

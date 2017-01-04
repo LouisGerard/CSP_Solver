@@ -56,6 +56,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+unsigned MainWindow::getGridSize()
+{
+    return gridSize;
+}
+
 MainWindow* MainWindow::getInstance()
 {
     return instance;

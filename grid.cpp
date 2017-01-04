@@ -37,6 +37,16 @@ unsigned Grid::size() const
     return grid.size();
 }
 
+int *Grid::toC() const
+{
+    int* result = (int*) malloc(sizeof(int)*grid.size()*grid.size());
+    for (unsigned x = 0; x < grid.size(); ++x)
+        for (unsigned y = 0; y < grid.size(); ++y)
+            *(result+x*y) = (int) grid[x][y];
+
+    return result;
+}
+
 Grid::operator QString() const
 {
     QString print = "";
