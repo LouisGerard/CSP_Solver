@@ -70,7 +70,7 @@ constraint ConstraintUniqueness::toC()
             ++offset;
         }
 
-    return create_constraint(&compareDifference, gridSizeFac*2-1, array);
+    return &create_constraint(&compareDifference, gridSizeFac*2-1, array);
 }
 
 ConstraintUniqueness::operator QString() const

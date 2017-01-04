@@ -10,7 +10,7 @@ public:
 
     bool eval(Grid& grid);
     operator QString() const;
-    constraint toC();
+    constraint * toC();
 
 private:
     unsigned line;

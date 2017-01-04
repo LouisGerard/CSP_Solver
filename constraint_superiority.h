@@ -10,7 +10,7 @@ class ConstraintSuperiority : public Constraint
 public:
     ConstraintSuperiority(std::pair<unsigned, unsigned> itemSup, std::pair<unsigned, unsigned> itemInf);
     bool eval(Grid& grid);
-    constraint toC();
+    constraint * toC();
     int cSize();
 
 
