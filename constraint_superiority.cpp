@@ -17,12 +17,12 @@ int *ConstraintSuperiority::toC()
     //size
     *result = 1;
     //operation
-    *(result+sizeof(int)) = 1;
+    *(result+1) = 1;
     //items
-    *(result+sizeof(int)*2) = itemSup.first;
-    *(result+sizeof(int)*3) = itemSup.second;
-    *(result+sizeof(int)*4) = itemInf.first;
-    *(result+sizeof(int)*5) = itemInf.second;
+    *(result+2) = itemSup.first;
+    *(result+3) = itemSup.second;
+    *(result+4) = itemInf.first;
+    *(result+5) = itemInf.second;
     return result;
 }
 

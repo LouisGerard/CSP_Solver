@@ -13,8 +13,7 @@ public:
     virtual int* toC() = 0;
 };
 
-#endif // CONSTRAINT_H
-
+//conversion
 typedef struct _constraint
 {
     typedef bool (*function)(int,int);
@@ -42,3 +41,4 @@ constraint create_constraint (function * f,unsigned size, int * array)
 
     return constr;
 }
+#endif // CONSTRAINT_H

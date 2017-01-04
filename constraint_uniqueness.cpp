@@ -39,9 +39,9 @@ int *ConstraintUniqueness::toC()
     //size
     *result = gridSizeFac*2-1;
     //operation
-    *(result+sizeof(int)) = 2;
+    *(result+1) = 2;
 
-    int offset = sizeof(int)*2;
+    int offset = 2;
     //items
     for (unsigned i1 = 0; i1 < gridSize; ++i1)
         for (unsigned i2 = 1; i2 < gridSize; ++i2) {
@@ -50,29 +50,29 @@ int *ConstraintUniqueness::toC()
             //itemHorizontal.x
             *(result+offset) = i1;
             //itemHorizontal.y
-            offset += sizeof(int);
+            ++offset;
             *(result+offset) = line;
             //itemHorizontal.x
-            offset += sizeof(int);
+            ++offset;
             *(result+offset) = i2;
             //itemHorizontal.y
-            offset += sizeof(int);
+            ++offset;
             *(result+offset) = line;
 
             //itemVertical.x
-            offset += sizeof(int);
+            ++offset;
             *(result+offset) = i1;
             //itemVertical.y
-            offset += sizeof(int);
+            ++offset;
             *(result+offset) = line;
             //itemVertical.x
-            offset += sizeof(int);
+            ++offset;
             *(result+offset) = i2;
             //itemVertical.y
-            offset += sizeof(int);
+            ++offset;
             *(result+offset) = line;
 
-            offset += sizeof(int);
+            ++offset;
         }
 
 }
