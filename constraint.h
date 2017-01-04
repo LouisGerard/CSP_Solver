@@ -14,3 +14,15 @@ public:
 };
 
 #endif // CONSTRAINT_H
+
+
+#ifdef AZIJEAZE
+typedef struct
+{
+    typedef bool (*function)(int,int);
+    function * operation;
+    unsigned size;
+    int * array;
+
+} constraint;
+#endif
