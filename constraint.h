@@ -10,7 +10,7 @@ public:
     virtual operator QString() const = 0;
 
     //size | operation | [ item1.x | item1.y | item2.x | item2.y ]
-    virtual int* toC() = 0;
+    virtual constraint toC() = 0;
 };
 
 //conversion
@@ -23,16 +23,7 @@ typedef struct _constraint
     int * array;
 } constraint;
 
-
-
-bool function1 (int first, int second)
-{
-}
-bool function2 (int first, int second)
-{
-}
-
-constraint create_constraint (function * f,unsigned size, int * array)
+constraint create_constraint (function * f, unsigned size, int * array)
 {
     constraint constr;
 

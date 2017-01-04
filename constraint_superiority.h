@@ -10,7 +10,7 @@ class ConstraintSuperiority : public Constraint
 public:
     ConstraintSuperiority(std::pair<unsigned, unsigned> itemSup, std::pair<unsigned, unsigned> itemInf);
     bool eval(Grid& grid);
-    int* toC();
+    constraint toC();
     int cSize();
 
 
@@ -26,5 +26,10 @@ private:
     std::pair<unsigned, unsigned> itemSup;
     std::pair<unsigned, unsigned> itemInf;
 };
+
+bool compareSuperiority (unsigned first, unsigned second)
+{
+    return first > second;
+}
 
 #endif // CONSTRAINT_SUPERIORITY_H

@@ -10,11 +10,16 @@ public:
 
     bool eval(Grid& grid);
     operator QString() const;
-    int* toC();
+    constraint toC();
 
 private:
     unsigned line;
     unsigned gridSize;
 };
+
+bool compareDifference (unsigned first, unsigned second)
+{
+    return first != second;
+}
 
 #endif // CONSTRAINT_UNIQUENESS_H

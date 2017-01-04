@@ -26,7 +26,7 @@ bool ConstraintUniqueness::eval(Grid& grid)
     return true;
 }
 
-int *ConstraintUniqueness::toC()
+constraint ConstraintUniqueness::toC()
 {
     int gridSize = (int) MainWindow::getInstance()->getGridSize();
     int gridSizeFac = 1;

@@ -16,9 +16,9 @@ AI::AI(Grid * base, std::vector<Constraint*> constraints, Heuristic *heuristic) 
 int* AI::BackTrackC()
 {
     int sizeOfGrid = sizeof(int)*base->size()*base->size();
-    int* grid = (int*) malloc(sizeOfGrid);
-    memcpy(grid, base->toC(),sizeOfGrid);
+    int* grid = base->toC();
 
+    delete grid;
 }
 
 bool AI::isConsistantC(int* grid)
