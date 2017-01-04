@@ -15,14 +15,30 @@ public:
 
 #endif // CONSTRAINT_H
 
-
-#ifdef AZIJEAZE
-typedef struct
+typedef struct constraint
 {
     typedef bool (*function)(int,int);
     function * operation;
     unsigned size;
     int * array;
-
 } constraint;
-#endif
+
+
+
+bool function1 (int first, int second)
+{
+}
+bool function2 (int first, int second)
+{
+}
+
+constraint create_constraint (function * f,unsigned size, int * array)
+{
+    constraint constr;
+
+    constr.operation = f;
+    constr.array = array;
+    constr.size = size;
+
+    return constr;
+}
