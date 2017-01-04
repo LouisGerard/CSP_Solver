@@ -15,7 +15,7 @@ public:
 
 #endif // CONSTRAINT_H
 
-typedef struct constraint
+typedef struct _constraint
 {
     typedef bool (*function)(int,int);
     function * operation;
