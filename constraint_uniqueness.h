@@ -17,7 +17,7 @@ private:
     unsigned gridSize;
 };
 
-bool compareDifference (unsigned first, unsigned second)
+inline bool compareDifference (unsigned first, unsigned second)
 {
     return first != second;
 }

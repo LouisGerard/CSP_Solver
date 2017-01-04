@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     item.cpp \
     ai.cpp \
     assignment.cpp \
-    basic_heuristic.cpp
+    basic_heuristic.cpp \
+    constraint.cpp
 
 HEADERS  += mainwindow.h \
     grid.h \
@@ -36,3 +37,5 @@ HEADERS  += mainwindow.h \
     basic_heuristic.h
 
 FORMS    += mainwindow.ui
+
+CONFIG += c++11

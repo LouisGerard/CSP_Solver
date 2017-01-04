@@ -26,7 +26,7 @@ private:
     std::pair<unsigned, unsigned> itemInf;
 };
 
-bool compareSuperiority (unsigned first, unsigned second)
+inline bool compareSuperiority (unsigned first, unsigned second)
 {
     return first > second;
 }
