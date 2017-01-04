@@ -17,7 +17,7 @@ public:
 
 //conversion
 
-typedef bool (*function)(int,int);
+typedef bool (*function)(unsigned, unsigned);
 typedef struct _constraint
 {
     function operation;
@@ -25,7 +25,7 @@ typedef struct _constraint
     int * array;
 } constraint;
 
-constraint create_constraint (function * f, unsigned size, int * array)
+constraint create_constraint (function f, unsigned size, int * array)
 {
     constraint constr;
 

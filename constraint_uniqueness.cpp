@@ -34,47 +34,43 @@ constraint ConstraintUniqueness::toC()
     for (unsigned i = 2; i <= gridSize; ++i)
         gridSizeFac *= i;
 
-    int sizeOfResult = sizeof(int)*(gridSizeFac*8-2);
-    int *result = (int*) malloc(sizeOfResult);
-    //size
-    *result = gridSizeFac*2-1;
-    //operation
-    *(result+1) = 2;
+    int sizeOfResult = sizeof(int)*(gridSizeFac*8-4);
+    int *array = (int*) malloc(sizeOfResult);
 
-    int offset = 2;
-    //items
+    int offset = 0;
     for (unsigned i1 = 0; i1 < gridSize; ++i1)
         for (unsigned i2 = 1; i2 < gridSize; ++i2) {
             if (i1 == i2)
-                break;
+                continue;
             //itemHorizontal.x
-            *(result+offset) = i1;
+            *(array+offset) = i1;
             //itemHorizontal.y
             ++offset;
-            *(result+offset) = line;
+            *(array+offset) = line;
             //itemHorizontal.x
             ++offset;
-            *(result+offset) = i2;
+            *(array+offset) = i2;
             //itemHorizontal.y
             ++offset;
-            *(result+offset) = line;
+            *(array+offset) = line;
 
             //itemVertical.x
             ++offset;
-            *(result+offset) = i1;
+            *(array+offset) = i1;
             //itemVertical.y
             ++offset;
-            *(result+offset) = line;
+            *(array+offset) = line;
             //itemVertical.x
             ++offset;
-            *(result+offset) = i2;
+            *(array+offset) = i2;
             //itemVertical.y
             ++offset;
-            *(result+offset) = line;
+            *(array+offset) = line;
 
             ++offset;
         }
 
+    return create_constraint(&compareDifference, gridSizeFac*2-1, array);
 }
 
 ConstraintUniqueness::operator QString() const
