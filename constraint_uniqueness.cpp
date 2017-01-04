@@ -34,8 +34,7 @@ int *ConstraintUniqueness::toC()
     for (unsigned i = 2; i <= gridSize; ++i)
         gridSizeFac *= i;
 
-    //todo beware ! not sure
-    int sizeOfResult = sizeof(int)*(gridSizeFac*4+1);
+    int sizeOfResult = sizeof(int)*(gridSizeFac*8-2);
     int *result = (int*) malloc(sizeOfResult);
     //size
     *result = gridSizeFac*2-1;
