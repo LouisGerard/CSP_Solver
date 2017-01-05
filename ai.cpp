@@ -29,7 +29,7 @@ int* AI::BackTrackC()
         defaultDomain[i] = i;
 
     //assign
-    for (int* item = grid; item-grid < gridSize; ++i)
+    for (int* item = grid; item-grid < gridSize; ++item)
         if (*item != 0) {
             varStack[++stackTop] = item-grid;
             domains[stackTop] = (int*) malloc(gridSize);
@@ -42,15 +42,15 @@ int* AI::BackTrackC()
         unsigned currentItem = varStack[stackTop];
 
         //eval domain
-        for (unsigned i = domain[stackTop]; *i < gridSize-1; ++i) {
+        for (int* i = domains[stackTop]; *i < gridSize-1; ++i) {
             *(grid+currentItem) = *i;
             if (isConsistantC(grid)) {
                 --stackTop;
                 //todo continue while
             }
             else {
-                delete domain[stackTop];    //juste la case ?
-                ++domain[stackTop];
+                delete domains[stackTop];    //juste la case ?
+                ++domains[stackTop];
             }
         }
 

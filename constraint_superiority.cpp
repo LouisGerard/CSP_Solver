@@ -16,7 +16,7 @@ constraint *ConstraintSuperiority::toC() {
     *array = itemSup.first;
     *(array+1) = itemSup.second;
     *(array+2) = itemInf.first;
-    *(array+2) = itemInf.second;
+    *(array+3) = itemInf.second;
     return create_constraint(&compareSuperiority, 1, array);
 }
 

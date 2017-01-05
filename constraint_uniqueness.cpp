@@ -29,12 +29,13 @@ bool ConstraintUniqueness::eval(Grid& grid)
 constraint * ConstraintUniqueness::toC()
 {
     int gridSize = (int) MainWindow::getInstance()->getGridSize();
-    unsigned gridSizeFac = 1;
-    //fractorial
-    for (unsigned i = 2; i <= gridSize; ++i)
-        gridSizeFac *= i;
+    //to test int gridSize = 3;
+    unsigned size = 0;
+    for (unsigned i = 1; i < gridSize; ++i)
+        size += i;
+    size *= 2;
 
-    int sizeOfResult = sizeof(int)*(gridSizeFac*8-4);
+    int sizeOfResult = sizeof(int)*(size*4);
     int *array = (int*) malloc(sizeOfResult);
 
     int offset = 0;
@@ -56,21 +57,21 @@ constraint * ConstraintUniqueness::toC()
 
             //itemVertical.x
             ++offset;
-            *(array+offset) = i1;
+            *(array+offset) = line;
             //itemVertical.y
             ++offset;
-            *(array+offset) = line;
+            *(array+offset) = i1;
             //itemVertical.x
             ++offset;
-            *(array+offset) = i2;
+            *(array+offset) = line;
             //itemVertical.y
             ++offset;
-            *(array+offset) = line;
+            *(array+offset) = i2;
 
             ++offset;
         }
 
-    return create_constraint(&compareDifference, gridSizeFac*2-1, array);
+    return create_constraint(&compareDifference, size, array);
 }
 
 ConstraintUniqueness::operator QString() const
