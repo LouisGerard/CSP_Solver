@@ -89,14 +89,29 @@ void testUniqueness() {
     delete uniquenessC;
 }
 
+void testGrid() {
+    unsigned gridSize = 3;
+    Grid grid(gridSize);
+    grid.assign(0, 0, 1);
+    grid.assign(2, 0, 2);
+    grid.assign(2, 2, 3);
+    grid.assign(0, 2, 4);
+    grid.assign(1, 1, 5);
+
+    int * gridC = grid.toC();
+    for (unsigned i = 0; i < gridSize*gridSize; ++i)
+        Q_ASSERT(grid.get(i%gridSize, i/gridSize) == *(gridC+i));
+}
+
 void test() {
     testSuperiority();
-    testUniqueness();
+    //testUniqueness();
+    testGrid();
 }
 
 int main(int argc, char *argv[])
 {
-    test();
+    //test();
     QApplication a(argc, argv);
     MainWindow w;
 
