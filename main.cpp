@@ -32,6 +32,7 @@ void testSuperiority() {
     Q_ASSERT(item2y == 2);
 
     // #NeverForget
+    delete superiorityC->array;
     delete superiorityC;
 }
 
@@ -41,7 +42,6 @@ void testUniqueness() {
     constraint * uniquenessC = uniqueness.toC();
 
     //size
-    qDebug() << uniquenessC->size;
     Q_ASSERT(uniquenessC->size == 6);
 
 
@@ -82,17 +82,16 @@ void testUniqueness() {
     expected.push_back(1);  //item 2 x
     expected.push_back(2);  //item 2 y
 
-    for (unsigned i = 0; i < expected.size(); ++i) {
-        qDebug() << "expected : "<<expected[i]<<", actual : "<<*(uniquenessC->array+i);
+    for (unsigned i = 0; i < expected.size(); ++i)
         Q_ASSERT(expected[i] == *(uniquenessC->array+i));
-    }
 
+    delete uniquenessC->array;
     delete uniquenessC;
 }
 
 void test() {
     testSuperiority();
-    //testUniqueness();
+    testUniqueness();
 }
 
 int main(int argc, char *argv[])

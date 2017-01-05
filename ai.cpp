@@ -38,7 +38,12 @@ int* AI::BackTrackC()
 
     unsigned nbVars = stackTop + 1;
 
-    while (stackTop != -1 && stackTop != nbVars) {
+    while (true) {
+        continue_while:
+        if (stackTop == -1)
+            return grid;
+        if (stackTop == nbVars)
+            return nullptr;
         unsigned currentItem = varStack[stackTop];
 
         //eval domain
@@ -46,7 +51,7 @@ int* AI::BackTrackC()
             *(grid+currentItem) = *i;
             if (isConsistantC(grid)) {
                 --stackTop;
-                //todo continue while
+                goto continue_while;
             }
             else {
                 delete domains[stackTop];    //juste la case ?
