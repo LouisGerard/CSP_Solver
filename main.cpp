@@ -37,8 +37,7 @@ void testSuperiority() {
 }
 
 void testUniqueness() {
-    ConstraintUniqueness uniqueness(1);
-    //to test, assign gridSize in constraint_uniqueness.cpp
+    ConstraintUniqueness uniqueness(1, 3);
     constraint * uniquenessC = uniqueness.toC();
 
     //size
@@ -105,13 +104,13 @@ void testGrid() {
 
 void test() {
     testSuperiority();
-    //testUniqueness();
+    testUniqueness();
     testGrid();
 }
 
 int main(int argc, char *argv[])
 {
-    //test();
+    test();
     QApplication a(argc, argv);
     MainWindow w;
 

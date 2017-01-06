@@ -2,8 +2,11 @@
 #include "mainwindow.h"
 #include <vector>
 
-ConstraintUniqueness::ConstraintUniqueness(unsigned line) :
-    line(line)
+#include <QDebug>
+
+ConstraintUniqueness::ConstraintUniqueness(unsigned line, unsigned gridSize /*=0*/) :
+    line(line),
+    gridSize(gridSize)
 {}
 
 bool ConstraintUniqueness::eval(Grid& grid)
@@ -28,8 +31,8 @@ bool ConstraintUniqueness::eval(Grid& grid)
 
 constraint * ConstraintUniqueness::toC()
 {
-    int gridSize = (int) MainWindow::getInstance()->getGridSize();
-    //to test int gridSize = 3;
+    if (gridSize == 0)
+        gridSize = (int) MainWindow::getInstance()->getGridSize();
     unsigned size = 0;
     for (unsigned i = 1; i < gridSize; ++i)
         size += i;
@@ -40,9 +43,7 @@ constraint * ConstraintUniqueness::toC()
 
     int offset = 0;
     for (unsigned i1 = 0; i1 < gridSize; ++i1)
-        for (unsigned i2 = 1; i2 < gridSize; ++i2) {
-            if (i1 == i2)
-                continue;
+        for (unsigned i2 = i1+1; i2 < gridSize; ++i2) {
             //itemHorizontal.x
             *(array+offset) = i1;
             //itemHorizontal.y

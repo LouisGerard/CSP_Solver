@@ -6,7 +6,7 @@
 class ConstraintUniqueness : public Constraint
 {
 public:
-    ConstraintUniqueness(unsigned line);
+    ConstraintUniqueness(unsigned line, unsigned gridSize = 0);
 
     bool eval(Grid& grid);
     operator QString() const;
