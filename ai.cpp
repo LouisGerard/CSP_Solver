@@ -23,10 +23,14 @@ int* AI::BackTrackC()
     int stackTop = -1;
 
     //domains
+    //can be replaced by an array of counters
     int* domains[gridSize*gridSize];
     int* defaultDomain = (int*) malloc(gridSize);
-    for (unsigned i = 0; i < gridSize; ++i)
+    for (unsigned i = 1; i <= gridSize; ++i)
         defaultDomain[i] = i;
+    int domainsOffsets[gridSize*gridSize];
+    for (unsigned i = 0; i < gridSize*gridSize; ++i)
+        domainsOffsets[i] = 0;
 
     //assign
     for (int* item = grid; item-grid < gridSize; ++item)
@@ -40,22 +44,25 @@ int* AI::BackTrackC()
 
     while (true) {
         continue_while:
-        if (stackTop == -1)
+        if (stackTop == -1) {
+            for (unsigned i = 0; i < gridSize*gridSize; ++i)
+                delete domains[i];
             return grid;
-        if (stackTop == nbVars)
+        }
+        if (stackTop == nbVars) {
+            for (unsigned i = 0; i < gridSize*gridSize; ++i)
+                delete domains[i];
             return nullptr;
+        }
+
         unsigned currentItem = varStack[stackTop];
 
         //eval domain
-        for (int* i = domains[stackTop]; *i < gridSize-1; ++i) {
-            *(grid+currentItem) = *i;
+        for (; domainsOffsets[stackTop] < gridSize; ++domainsOffsets[stackTop]) {
+            *(grid+currentItem) = *(domains[stackTop]+domainsOffsets[stackTop]);
             if (isConsistantC(grid)) {
                 --stackTop;
                 goto continue_while;
-            }
-            else {
-                delete domains[stackTop];    //juste la case ?
-                ++domains[stackTop];
             }
         }
 
@@ -63,16 +70,14 @@ int* AI::BackTrackC()
         domains[stackTop] = (int*) malloc(gridSize);
         memcpy(domains[stackTop], defaultDomain, gridSize);
 
+        //reinit grid
+        *(grid+currentItem) = 0;
+
         ++stackTop;
     }
-
-    for (unsigned i = 0; i < gridSize*gridSize; ++i)
-        delete domains[i];    //juste la case ?
-
-    return grid;
 }
 
-bool AI::isConsistantC(int* grid)
+bool AI::isConsistantC(int* grid, constraint * constraints[])
 {
 
 }

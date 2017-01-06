@@ -110,7 +110,9 @@ void test() {
 
 int main(int argc, char *argv[])
 {
+#ifdef QT_DEBUG
     test();
+#endif
     QApplication a(argc, argv);
     MainWindow w;
 
