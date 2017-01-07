@@ -52,12 +52,12 @@ int* AI::BackTrackC()
     while (true) {
         continue_while:
         if (stackTop == -1) {
-            for (unsigned i = 0; i < gridSize*gridSize; ++i)
+            for (unsigned i = 0; i < nbVars; ++i)
                 delete domains[i];
             return grid;
         }
         if (stackTop == nbVars) {
-            for (unsigned i = 0; i < gridSize*gridSize; ++i)
+            for (unsigned i = 0; i < nbVars; ++i)
                 delete domains[i];
             return nullptr;
         }
