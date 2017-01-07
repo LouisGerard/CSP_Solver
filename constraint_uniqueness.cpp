@@ -38,8 +38,7 @@ constraint * ConstraintUniqueness::toC()
         size += i;
     size *= 2;
 
-    int sizeOfResult = sizeof(int)*(size*4);
-    int *array = (int*) malloc(sizeOfResult);
+    int *array = (int*) malloc(sizeof(int)*(size*4));
 
     int offset = 0;
     for (unsigned i1 = 0; i1 < gridSize; ++i1)

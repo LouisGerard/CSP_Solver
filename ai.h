@@ -15,7 +15,7 @@ public:
     Grid ForwardChecking();
     int* ForwardCheckingC();
 
-    bool isConsistantC(int* grid);
+    bool isConsistantC(int* grid, constraint* constraints[], unsigned consSize, unsigned gridSize);
 
 private:
     Grid const * base;

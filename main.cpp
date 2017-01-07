@@ -18,8 +18,8 @@ void testSuperiority() {
     Q_ASSERT(superiorityC->size == 1);
 
     //operation
-    Q_ASSERT(superiorityC->operation(1, 0));
-    Q_ASSERT(!superiorityC->operation(0, 1));
+    Q_ASSERT(superiorityC->operation(2, 1));
+    Q_ASSERT(!superiorityC->operation(1, 2));
 
     //array
     int item1x = *superiorityC->array;
@@ -45,7 +45,7 @@ void testUniqueness() {
 
 
     //operation
-    Q_ASSERT(uniquenessC->operation(0, 1));
+    Q_ASSERT(uniquenessC->operation(1, 2));
     Q_ASSERT(!uniquenessC->operation(1, 1));
 
     //array

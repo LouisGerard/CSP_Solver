@@ -28,7 +28,7 @@ private:
 
 inline bool compareSuperiority (unsigned first, unsigned second)
 {
-    return first > second;
+    return first == 0 || second == 0 || first > second;
 }
 
 #endif // CONSTRAINT_SUPERIORITY_H

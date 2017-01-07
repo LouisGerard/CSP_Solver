@@ -19,7 +19,7 @@ private:
 
 inline bool compareDifference (unsigned first, unsigned second)
 {
-    return first != second;
+    return  first == 0 || second == 0 || first != second;
 }
 
 #endif // CONSTRAINT_UNIQUENESS_H

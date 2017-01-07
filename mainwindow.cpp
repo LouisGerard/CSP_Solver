@@ -5,6 +5,7 @@
 #include "constraint_uniqueness.h"
 #include "file.h"
 
+#include "basic_heuristic.h"'
 #include "ai.h"
 #include <utility>
 #include <QInputDialog>
@@ -32,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 continue;
             gridSize = grid->size();
             constraints = file.parseConstraints();
+            //todo update constraints
 
             setGridView();
             updateGridView();
@@ -72,6 +74,18 @@ void MainWindow::go()
     clean();
     fillGrid();
     createConstraints();
+    AI ai(grid, constraints, new BasicHeuristic(gridSize));
+    int* result = ai.BackTrackC();
+    if (result == nullptr) {
+        qDebug() << "No solution ! ";
+    }
+    else {
+        delete grid;
+        grid = new Grid(result, gridSize);
+        delete result;
+        qDebug() << "Solution found ! ";
+        qDebug().noquote() << *grid;
+    }
     setEnabled(true);
 }
 

@@ -9,6 +9,7 @@ class Grid
 {
 public:
     Grid(unsigned size);
+    Grid(int* gridC, unsigned gridSize);
     Grid(const Grid & cpy);
     Item get(unsigned x, unsigned y) const;
     bool assign(unsigned x, unsigned y, unsigned value);

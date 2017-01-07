@@ -14,6 +14,18 @@ Grid::Grid(unsigned size)
     qDebug() << "Grid created, size : " << this->size();
 }
 
+Grid::Grid(int *gridC, unsigned gridSize)
+{
+    grid.resize(gridSize);
+    for (unsigned x = 0; x < gridSize; ++x) {
+        grid[x].resize(gridSize);
+        for (unsigned y = 0; y < gridSize; ++y) {
+            unsigned offset = y*gridSize+x;
+            grid[x][y] = *(gridC+offset);
+        }
+    }
+}
+
 Grid::Grid(const Grid & cpy)
 {
     grid = cpy.grid;
