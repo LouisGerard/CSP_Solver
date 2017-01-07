@@ -8,6 +8,7 @@
 #include "basic_heuristic.h"'
 #include "ai.h"
 #include <utility>
+#include <algorithm>
 #include <QInputDialog>
 #include <QDebug>
 #include <QSpinBox>
@@ -33,10 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
                 continue;
             gridSize = grid->size();
             constraints = file.parseConstraints();
-            //todo update constraints
 
             setGridView();
             updateGridView();
+            updateConstraints();
         }
         else {
             gridSize = QInputDialog::getInt(this, "Taille de la grille", "Entrez une taille : ", 5, 4, 10);
@@ -85,6 +86,7 @@ void MainWindow::go()
         delete result;
         qDebug() << "Solution found ! ";
         qDebug().noquote() << *grid;
+        updateGridView();
     }
     setEnabled(true);
 }
@@ -138,6 +140,28 @@ void MainWindow::updateGridView()
         }
     }
     qDebug() << "View updated.";
+}
+
+void MainWindow::updateConstraints()
+{
+    for (unsigned i = 0; i < constraints.size(); ++i)
+        if (ConstraintSuperiority* cons = dynamic_cast<ConstraintSuperiority*>(constraints[i])) {
+            std::pair<unsigned, unsigned> itemSup = cons->getItemSup();
+            std::pair<unsigned, unsigned> itemInf = cons->getItemInf();
+
+            QComboBox* input;
+            unsigned index;
+            if (itemSup.first == itemInf.first) {   //vertical
+                input = (QComboBox*) ui->gridLayout
+                        ->itemAtPosition(std::min(itemSup.second, itemInf.second)*2+1, itemSup.first*2)->widget();
+                index = (itemSup.second > itemInf.second ? 1 : 2);
+            } else {   //horizontal
+                input = (QComboBox*) ui->gridLayout
+                        ->itemAtPosition(itemSup.second*2, std::min(itemSup.first, itemInf.first)*2+1)->widget();
+                index = (itemSup.first > itemInf.first ? 1 : 2);
+            }
+            input->setCurrentIndex(index);
+        }
 }
 
 void MainWindow::fillGrid()

@@ -28,6 +28,7 @@ private:
     void clean();
     void setGridView();
     void updateGridView();
+    void updateConstraints();
     void fillGrid();
     void createConstraints();
     void createConstraintsSuperiorityHorizontal();

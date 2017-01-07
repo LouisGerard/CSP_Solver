@@ -66,8 +66,7 @@ int* AI::BackTrackC()
 
         //eval domain
         for (; domainsOffsets[stackTop] < gridSize; ++domainsOffsets[stackTop]) {
-            int value = *(domains[stackTop]+domainsOffsets[stackTop]);
-            *(grid+currentItem) = value;
+            *(grid+currentItem) = *(domains[stackTop]+domainsOffsets[stackTop]);
             if (isConsistantC(grid, constraintsC, constraints.size(), gridSize)) {
                 --stackTop;
                 goto continue_while;
