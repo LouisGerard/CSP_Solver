@@ -18,7 +18,6 @@ int* AI::BackTrackC()
     unsigned gridSize = base->size();
     int* grid = base->toC();
 
-
     //constraints
     constraint* constraintsC[constraints.size()];
     for (unsigned i = 0; i < constraints.size(); ++i)
@@ -84,20 +83,48 @@ int* AI::BackTrackC()
     }
 }
 
+int *AI::ForwardCheckingC()
+{
+
+}
+
 bool AI::isConsistantC(int* grid, constraint* constraints[], unsigned consSize, unsigned gridSize)
 {
-    for (unsigned i = 0; i < consSize; ++i) {
-        for (unsigned j = 0; j < constraints[i]->size; ++j) {
-            unsigned x1 = *(constraints[i]->array+j*4);
-            unsigned y1 = *(constraints[i]->array+j*4+1);
-            unsigned x2 = *(constraints[i]->array+j*4+2);
-            unsigned y2 = *(constraints[i]->array+j*4+3);
+    for (unsigned c = 0; c < consSize; ++c) {
+        for (unsigned a = 0; a < constraints[c]->size; ++a) {
+            unsigned x1 = *(constraints[c]->array+a*4);
+            unsigned y1 = *(constraints[c]->array+a*4+1);
+            unsigned x2 = *(constraints[c]->array+a*4+2);
+            unsigned y2 = *(constraints[c]->array+a*4+3);
             int item1 = *(grid+y1*gridSize+x1);
             int item2 = *(grid+y2*gridSize+x2);
-            if (!constraints[i]->operation(item1, item2))
+            if (!constraints[c]->operation(item1, item2))
                 return false;
         }
     }
     return true;
+}
+
+bool AI::filterDomainsC(int item, int *grid, constraint *constraints[], unsigned consSize, unsigned gridSize, int domain[])
+{
+    for (unsigned c = 0; c < consSize; ++c) {
+        for (unsigned a = 0; a < constraints[c]->size; ++a) {
+            unsigned x1 = *(constraints[c]->array+a*4);
+            unsigned y1 = *(constraints[c]->array+a*4+1);
+            unsigned x2 = *(constraints[c]->array+a*4+2);
+            unsigned y2 = *(constraints[c]->array+a*4+3);
+            int item1 = grid+y1*gridSize+x1;
+            int item2 = grid+y2*gridSize+x2;
+            if (item != item1 && item != item2)
+                continue;
+
+            for (unsigned d = 0; d < gridSize; ++d) {
+                if (!constraints[c]->operation(*(grid+item), domain[d]))
+                    ;//todo remove value from domain
+            }
+            //todo check if domain is empty
+        }
+    }
+
 }
 

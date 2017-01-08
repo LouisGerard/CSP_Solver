@@ -14,8 +14,10 @@ public:
     int* BackTrackC();
     Grid ForwardChecking();
     int* ForwardCheckingC();
+    int* ForwardCheckingCOptimized();
 
     bool isConsistantC(int* grid, constraint* constraints[], unsigned consSize, unsigned gridSize);
+    bool filterDomainsC(int item, int* grid, constraint* constraints[], unsigned consSize, unsigned gridSize, int domain[]);
 
 private:
     Grid const * base;
