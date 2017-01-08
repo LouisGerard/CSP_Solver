@@ -17,7 +17,13 @@ public:
     int* ForwardCheckingCOptimized();
 
     bool isConsistantC(int* grid, constraint* constraints[], unsigned consSize, unsigned gridSize);
-    bool filterDomainsC(int item, int* grid, constraint* constraints[], unsigned consSize, unsigned gridSize, int domain[]);
+    bool filterDomainsC(int item,
+                        int *grid,
+                        constraint *constraints[],
+                        unsigned consSize,
+                        unsigned gridSize,
+                        int & domains[][],
+                        int & domSizes[]);
 
 private:
     Grid const * base;

@@ -105,7 +105,13 @@ bool AI::isConsistantC(int* grid, constraint* constraints[], unsigned consSize, 
     return true;
 }
 
-bool AI::filterDomainsC(int item, int *grid, constraint *constraints[], unsigned consSize, unsigned gridSize, int domain[])
+bool AI::filterDomainsC(int item,
+                        int *grid,
+                        constraint *constraints[],
+                        unsigned consSize,
+                        unsigned gridSize,
+                        int & domains[][],
+                        int & domSizes[])
 {
     for (unsigned c = 0; c < consSize; ++c) {
         for (unsigned a = 0; a < constraints[c]->size; ++a) {
@@ -115,16 +121,31 @@ bool AI::filterDomainsC(int item, int *grid, constraint *constraints[], unsigned
             unsigned y2 = *(constraints[c]->array+a*4+3);
             int item1 = grid+y1*gridSize+x1;
             int item2 = grid+y2*gridSize+x2;
-            if (item != item1 && item != item2)
-                continue;
+            int linkedItem;
+            if (item != item1) {
+                if (item != item2)
+                    continue;
+                else
+                    linkedItem = item1;
+            }
+            else
+                linkedItem = item2;
 
             for (unsigned d = 0; d < gridSize; ++d) {
-                if (!constraints[c]->operation(*(grid+item), domain[d]))
-                    ;//todo remove value from domain
+                if (!constraints[c]->operation(*(grid+item), domains[linkedItem][d])) {
+                    //remove value from domain
+                    int temp = domains[linkedItem][d];
+                    domains[linkedItem][d] = domains[linkedItem][domSize-1];
+                    domains[linkedItem][domSize-1] = temp;
+                    --domSizes[linkedItem];
+                }
             }
             //todo check if domain is empty
+            if (domSizes[linkedItem] == 0)
+                return false;
         }
     }
+    return true;
 
 }
 
