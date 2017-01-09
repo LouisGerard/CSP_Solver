@@ -22,8 +22,8 @@ public:
                         constraint *constraints[],
                         unsigned consSize,
                         unsigned gridSize,
-                        int & domains[][],
-                        int & domSizes[]);
+                        int ** domains,
+                        int * domSizes);
 
 private:
     Grid const * base;

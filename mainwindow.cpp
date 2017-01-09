@@ -76,7 +76,7 @@ void MainWindow::go()
     fillGrid();
     createConstraints();
     AI ai(grid, constraints, new BasicHeuristic(gridSize));
-    int* result = ai.BackTrackC();
+    int* result = ai.ForwardCheckingC();
     if (result == nullptr) {
         qDebug() << "No solution ! ";
     }
