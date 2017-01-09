@@ -140,8 +140,7 @@ int *AI::ForwardCheckingC()
         for (; domainsOffsets[stackTop] < gridSize; ++domainsOffsets[stackTop]) {
             *(grid+currentItem) = *(domains[stackTop]+domainsOffsets[stackTop]);
             if (isConsistantC(grid, constraintsC, constraints.size(), gridSize)) {
-                --stackTop;
-                if (!filterDomainsC(varStack[stackTop],
+                if (!filterDomainsC(varStack[stackTop--],
                                     grid,
                                     constraintsC,
                                     constraints.size(),
@@ -211,10 +210,13 @@ bool AI::filterDomainsC(int item,
             if (*(grid+linkedItem) != 0)
                 continue;
 
-            for (unsigned d = 0; d < gridSize; ++d) {
+            for (unsigned d = 0; d < domSizes[linkedItem]; ++d) {
                 if (!constraints[c]->operation(*(grid+item), domains[linkedItem][d])) {
                     //remove value from domain
+                    int value = *(grid+item);
                     int temp = domains[linkedItem][d];
+                    qDebug() << "removing " << domains[linkedItem][d] << " from " << linkedItem << " because of " << item << "(" << value << ")";
+                    qDebug() << "remaining " << domSizes[linkedItem]-1 << " items";
                     domains[linkedItem][d] = domains[linkedItem][domSizes[linkedItem]-1];
                     domains[linkedItem][domSizes[linkedItem]-1] = temp;
                     --domSizes[linkedItem];
