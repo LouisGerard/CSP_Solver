@@ -3,6 +3,7 @@
 #include "grid.h"
 #include "constraint.h"
 #include "assignment.h"
+#include <sys/time.h>
 #include <utility>
 #include <vector>
 #include <QDebug>
@@ -50,19 +51,23 @@ int* AI::BackTrackC()
     unsigned nbVars = stackTop + 1;
 
     qDebug() << "Searching...";
+    gettimeofday(&start, NULL);
     while (true) {
         continue_while:
         if (stackTop == -1) {
+            gettimeofday(&stop, NULL);
             for (unsigned i = 0; i < nbVars; ++i)
                 free(domains[i]);
             return grid;
         }
         if (stackTop == nbVars) {
+            gettimeofday(&stop, NULL);
             for (unsigned i = 0; i < nbVars; ++i)
                 free(domains[i]);
             return nullptr;
         }
 
+        ++iterationsCpt;
         unsigned currentItem = varStack[stackTop];
 
         //eval domain
@@ -101,7 +106,6 @@ int *AI::ForwardCheckingC()
     int stackTop = -1;
 
     //domains
-    //can be replaced by an array of counters
     int* domains[gridSize*gridSize];
     int* defaultDomain = (int*) malloc(gridSize);
     for (int i = 1; i <= gridSize; ++i)
@@ -128,18 +132,22 @@ int *AI::ForwardCheckingC()
             domainSizes[i][j] = gridSize;
 
     qDebug() << "Searching...";
+    gettimeofday(&start, NULL);
     while (true) {
         continue_while:
         if (stackTop == -1) {
+            gettimeofday(&stop, NULL);
             for (unsigned i = 0; i < nbVars; ++i)
                 free(domains[i]);
             return grid;
         }
         if (stackTop == nbVars) {
+            gettimeofday(&stop, NULL);
             for (unsigned i = 0; i < nbVars; ++i)
                 free(domains[i]);
             return nullptr;
         }
+        ++iterationsCpt;
 
         if (stackTop != nbVars-1)
             memcpy(&domainSizes[stackTop], &domainSizes[stackTop+1], nbVars*sizeof(int));
@@ -190,6 +198,7 @@ bool AI::isConsistantC(int* grid, constraint* constraints[], unsigned consSize, 
             unsigned y2 = *(constraints[c]->array+a*4+3);
             int item1 = *(grid+y1*gridSize+x1);
             int item2 = *(grid+y2*gridSize+x2);
+            ++constraintsCpt;
             if (!constraints[c]->operation(item1, item2))
                 return false;
         }
@@ -227,6 +236,7 @@ bool AI::filterDomainsC(int item,
                 continue;
 
             for (unsigned d = 0; d < domSizes[linkedItem]; ++d) {
+                ++constraintsCpt;
                 if (!constraints[c]->operation(*(grid+item), domains[linkedItem][d])) {
                     //remove value from domain
                     int temp = domains[linkedItem][d];
@@ -241,5 +251,25 @@ bool AI::filterDomainsC(int item,
     }
     return true;
 
+}
+
+struct timeval AI::getStart() const
+{
+    return start;
+}
+
+struct timeval AI::getStop() const
+{
+    return stop;
+}
+
+unsigned AI::getIterationsCpt() const
+{
+    return iterationsCpt;
+}
+
+unsigned AI::getConstraintsCpt() const
+{
+    return constraintsCpt;
 }
 

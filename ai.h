@@ -5,6 +5,7 @@
 #include "constraint.h"
 #include "heuristic.h"
 #include <vector>
+#include <sys/time.h>
 
 class AI
 {
@@ -25,10 +26,22 @@ public:
                         int ** domains,
                         int * domSizes);
 
+    struct timeval getStart() const;
+
+    struct timeval getStop() const;
+
+    unsigned getIterationsCpt() const;
+
+    unsigned getConstraintsCpt() const;
+
 private:
     Grid const * base;
     std::vector<Constraint*> constraints;
     Heuristic* heuristic;
+
+    struct timeval start, stop;
+    unsigned iterationsCpt = 0;
+    unsigned constraintsCpt = 0;
 };
 
 #endif // AI_H
