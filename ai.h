@@ -5,7 +5,7 @@
 #include "constraint.h"
 #include "heuristic.h"
 #include <vector>
-#include <sys/time.h>
+#include <sys\timeb.h>
 
 class AI
 {
@@ -26,9 +26,9 @@ public:
                         int ** domains,
                         int * domSizes);
 
-    struct timeval getStart() const;
+    struct timeb getStart() const;
 
-    struct timeval getStop() const;
+    struct timeb getStop() const;
 
     unsigned getIterationsCpt() const;
 
@@ -39,7 +39,7 @@ private:
     std::vector<Constraint*> constraints;
     Heuristic* heuristic;
 
-    struct timeval start, stop;
+    struct timeb start, stop;
     unsigned iterationsCpt = 0;
     unsigned constraintsCpt = 0;
 };

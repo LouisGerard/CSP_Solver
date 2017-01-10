@@ -3,7 +3,7 @@
 #include "grid.h"
 #include "constraint.h"
 #include "assignment.h"
-#include <sys/time.h>
+#include <sys\timeb.h>
 #include <utility>
 #include <vector>
 #include <QDebug>
@@ -51,17 +51,17 @@ int* AI::BackTrackC()
     unsigned nbVars = stackTop + 1;
 
     qDebug() << "Searching...";
-    gettimeofday(&start, NULL);
+    ftime(&start);
     while (true) {
         continue_while:
         if (stackTop == -1) {
-            gettimeofday(&stop, NULL);
+            ftime(&stop);
             for (unsigned i = 0; i < nbVars; ++i)
                 free(domains[i]);
             return grid;
         }
         if (stackTop == nbVars) {
-            gettimeofday(&stop, NULL);
+            ftime(&stop);
             for (unsigned i = 0; i < nbVars; ++i)
                 free(domains[i]);
             return nullptr;
@@ -132,17 +132,17 @@ int *AI::ForwardCheckingC()
             domainSizes[i][j] = gridSize;
 
     qDebug() << "Searching...";
-    gettimeofday(&start, NULL);
+    ftime(&start);
     while (true) {
         continue_while:
         if (stackTop == -1) {
-            gettimeofday(&stop, NULL);
+            ftime(&stop);
             for (unsigned i = 0; i < nbVars; ++i)
                 free(domains[i]);
             return grid;
         }
         if (stackTop == nbVars) {
-            gettimeofday(&stop, NULL);
+            ftime(&stop);
             for (unsigned i = 0; i < nbVars; ++i)
                 free(domains[i]);
             return nullptr;
@@ -253,12 +253,12 @@ bool AI::filterDomainsC(int item,
 
 }
 
-struct timeval AI::getStart() const
+struct timeb AI::getStart() const
 {
     return start;
 }
 
-struct timeval AI::getStop() const
+struct timeb AI::getStop() const
 {
     return stop;
 }

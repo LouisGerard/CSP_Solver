@@ -7,7 +7,7 @@
 
 #include "basic_heuristic.h"'
 #include "ai.h"
-#include <sys/time.h>
+#include <sys\timeb.h>
 #include <utility>
 #include <algorithm>
 #include <QInputDialog>
@@ -103,7 +103,8 @@ void MainWindow::go()
         qDebug().noquote() << *grid;
         updateGridView();
     }
-    qDebug() << "Time : " << ai.getStop().tv_usec - ai.getStart().tv_usec;
+    qDebug() << "Time : " << (int) (1000.0 * (ai.getStop().time - ai.getStart().time)
+                                    + (ai.getStop().millitm - ai.getStart().millitm));
     qDebug() << "Iterations : " << ai.getIterationsCpt();
     qDebug() << "Constraints : " << ai.getConstraintsCpt();
     setEnabled(true);
