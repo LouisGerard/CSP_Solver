@@ -22,13 +22,14 @@ public:
 
 public slots:
     void go();
+    void clean();
 
 private:
     static MainWindow* instance;
-    void clean();
     void setGridView();
     void updateGridView();
     void updateConstraints();
+    void cleanConstraints();
     void fillGrid();
     void createConstraints();
     void createConstraintsSuperiorityHorizontal();

@@ -38,6 +38,29 @@
      <string>Go</string>
     </property>
    </widget>
+   <widget class="QComboBox" name="algoChoice">
+    <property name="geometry">
+     <rect>
+      <x>394</x>
+      <y>490</y>
+      <width>181</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="reset">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>490</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

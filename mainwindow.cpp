@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QStringList algos;
+    algos << "BackTrack" << "Forward Checking" << "Optimized FC";
+    ui->algoChoice->insertItems(1, algos);
 
     while (true) {
         QString filePath = QInputDialog::getText(this,
@@ -47,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     QObject::connect(ui->goButton, SIGNAL(clicked()), this, SLOT(go()));
+    QObject::connect(ui->reset, SIGNAL(clicked()), this, SLOT(clean()));
     this->show();
     instance = this;
 }
@@ -76,7 +80,17 @@ void MainWindow::go()
     fillGrid();
     createConstraints();
     AI ai(grid, constraints, new BasicHeuristic(gridSize));
-    int* result = ai.ForwardCheckingC();
+    int* result;
+    switch (ui->algoChoice->currentIndex()) {
+    case 0: //BT
+        result = ai.BackTrackC();
+        break;
+    case 1:
+        result = ai.ForwardCheckingC();
+        break;
+    default:
+        result = ai.ForwardCheckingCOptimized();
+    }
     if (result == nullptr) {
         qDebug() << "No solution ! ";
     }
@@ -96,6 +110,8 @@ void MainWindow::clean()
     delete grid;
     grid = new Grid(gridSize);
     constraints.clear();
+    updateGridView();
+    cleanConstraints();
 }
 
 void MainWindow::setGridView()
@@ -162,6 +178,22 @@ void MainWindow::updateConstraints()
             }
             input->setCurrentIndex(index);
         }
+}
+
+void MainWindow::cleanConstraints()
+{
+    for (unsigned x = 0; x < gridSize-1; ++x) {
+        for (unsigned y = 0; y < gridSize; ++y) {
+            QComboBox* input = (QComboBox*) ui->gridLayout->itemAtPosition(y*2, x*2+1)->widget();
+            input->setCurrentIndex(0);
+        }
+    }
+    for (unsigned x = 0; x < gridSize; ++x) {
+        for (unsigned y = 0; y < gridSize-1; ++y) {
+            QComboBox* input = (QComboBox*) ui->gridLayout->itemAtPosition(y*2+1, x*2)->widget();
+            input->setCurrentIndex(0);
+        }
+    }
 }
 
 void MainWindow::fillGrid()

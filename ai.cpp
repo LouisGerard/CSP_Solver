@@ -15,6 +15,7 @@ AI::AI(Grid * base, std::vector<Constraint*> constraints, Heuristic *heuristic) 
 
 int* AI::BackTrackC()
 {
+    qDebug() << "BT called";
     unsigned gridSize = base->size();
     int* grid = base->toC();
 
@@ -48,6 +49,7 @@ int* AI::BackTrackC()
 
     unsigned nbVars = stackTop + 1;
 
+    qDebug() << "Searching...";
     while (true) {
         continue_while:
         if (stackTop == -1) {
@@ -85,6 +87,7 @@ int* AI::BackTrackC()
 
 int *AI::ForwardCheckingC()
 {
+    qDebug() << "FC called";
     unsigned gridSize = base->size();
     int* grid = base->toC();
 
@@ -124,6 +127,7 @@ int *AI::ForwardCheckingC()
         for (unsigned j = 0; j < nbVars; ++j)
             domainSizes[i][j] = gridSize;
 
+    qDebug() << "Searching...";
     while (true) {
         continue_while:
         if (stackTop == -1) {
@@ -168,6 +172,12 @@ int *AI::ForwardCheckingC()
         ++domainsOffsets[stackTop];
     }
 
+}
+
+int *AI::ForwardCheckingCOptimized()
+{
+    qDebug() << "Not implemented yet";
+    return nullptr;
 }
 
 bool AI::isConsistantC(int* grid, constraint* constraints[], unsigned consSize, unsigned gridSize)
