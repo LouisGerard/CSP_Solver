@@ -104,10 +104,8 @@ int *AI::ForwardCheckingC()
     for (int i = 1; i <= gridSize; ++i)
         *(defaultDomain+i-1) = i;
     int domainsOffsets[gridSize*gridSize];
-    int domainSizes[gridSize*gridSize];
     for (unsigned i = 0; i < gridSize*gridSize; ++i) {
         domainsOffsets[i] = 0;
-        domainSizes[i] = gridSize;
     }
 
     //assign
@@ -120,6 +118,11 @@ int *AI::ForwardCheckingC()
     }
 
     unsigned nbVars = stackTop + 1;
+
+    int domainSizes[nbVars][nbVars];
+    for (unsigned i = 0; i < nbVars; ++i)
+        for (unsigned j = 0; j < nbVars; ++j)
+            domainSizes[i][j] = gridSize;
 
     while (true) {
         continue_while:
@@ -134,6 +137,9 @@ int *AI::ForwardCheckingC()
             return nullptr;
         }
 
+        if (stackTop != nbVars-1)
+            memcpy(&domainSizes[stackTop], &domainSizes[stackTop+1], nbVars*sizeof(int));
+
         unsigned currentItem = varStack[stackTop];
 
         //eval domain
@@ -146,7 +152,7 @@ int *AI::ForwardCheckingC()
                                     constraints.size(),
                                     gridSize,
                                     domains,
-                                    domainSizes))
+                                    domainSizes[stackTop]))
                     break;  //go back if one domain is empty
                 goto continue_while;
             }
@@ -213,10 +219,7 @@ bool AI::filterDomainsC(int item,
             for (unsigned d = 0; d < domSizes[linkedItem]; ++d) {
                 if (!constraints[c]->operation(*(grid+item), domains[linkedItem][d])) {
                     //remove value from domain
-                    int value = *(grid+item);
                     int temp = domains[linkedItem][d];
-                    qDebug() << "removing " << domains[linkedItem][d] << " from " << linkedItem << " because of " << item << "(" << value << ")";
-                    qDebug() << "remaining " << domSizes[linkedItem]-1 << " items";
                     domains[linkedItem][d] = domains[linkedItem][domSizes[linkedItem]-1];
                     domains[linkedItem][domSizes[linkedItem]-1] = temp;
                     --domSizes[linkedItem];
