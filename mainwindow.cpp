@@ -5,7 +5,7 @@
 #include "constraint_uniqueness.h"
 #include "file.h"
 
-#include "basic_heuristic.h"'
+#include "basic_heuristic.h"
 #include "ai.h"
 #include <sys\timeb.h>
 #include <utility>
@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
             updateConstraints();
         }
         else {
-            gridSize = QInputDialog::getInt(this, "Taille de la grille", "Entrez une taille : ", 5, 4, 10);
+            gridSize = QInputDialog::getInt(this, "Taille de la grille", "Entrez une taille : ", 5, 4, 9);
             setGridView();
         }
         break;

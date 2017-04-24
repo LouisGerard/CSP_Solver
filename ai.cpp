@@ -111,9 +111,8 @@ int *AI::ForwardCheckingC()
     for (int i = 1; i <= gridSize; ++i)
         *(defaultDomain+i-1) = i;
     int domainsOffsets[gridSize*gridSize];
-    for (unsigned i = 0; i < gridSize*gridSize; ++i) {
+    for (unsigned i = 0; i < gridSize*gridSize; ++i)
         domainsOffsets[i] = 0;
-    }
 
     //assign
     for (int* item = grid; item-grid < gridSize*gridSize; ++item) {
@@ -135,6 +134,7 @@ int *AI::ForwardCheckingC()
     ftime(&start);
     while (true) {
         continue_while:
+
         if (stackTop == -1) {
             ftime(&stop);
             for (unsigned i = 0; i < nbVars; ++i)
@@ -214,6 +214,7 @@ bool AI::filterDomainsC(int item,
                         int ** domains,
                         int * domSizes)
 {
+    int *linkedVal;
     for (unsigned c = 0; c < consSize; ++c) {
         for (unsigned a = 0; a < constraints[c]->size; ++a) {
             unsigned x1 = *(constraints[c]->array+a*4);
@@ -223,21 +224,28 @@ bool AI::filterDomainsC(int item,
             int item1 = y1*gridSize+x1;
             int item2 = y2*gridSize+x2;
             int linkedItem;
+            int *val1 = grid+item1;
+            int *val2 = grid+item2;
             if (item != item1) {
                 if (item != item2)
                     continue;
-                else
-                    linkedItem = item1;
+                linkedItem = item1;
+                val1 = (int*) malloc(sizeof(int));
+                linkedVal = val1;
             }
-            else
+            else {
                 linkedItem = item2;
+                val2 = (int*) malloc(sizeof(int));
+                linkedVal = val2;
+            }
 
-            if (*(grid+linkedItem) != 0)
+            if (*linkedVal != 0)
                 continue;
 
             for (unsigned d = 0; d < domSizes[linkedItem]; ++d) {
                 ++constraintsCpt;
-                if (!constraints[c]->operation(*(grid+item), domains[linkedItem][d])) {
+                *linkedVal = domains[linkedItem][d];
+                if (!constraints[c]->operation(*val1, *val2)) {
                     //remove value from domain
                     int temp = domains[linkedItem][d];
                     domains[linkedItem][d] = domains[linkedItem][domSizes[linkedItem]-1];
@@ -245,12 +253,14 @@ bool AI::filterDomainsC(int item,
                     --domSizes[linkedItem];
                 }
             }
-            if (domSizes[linkedItem] == 0)
+            if (domSizes[linkedItem] == 0) {
+                free(linkedVal);
                 return false;
+            }
         }
     }
+    free(linkedVal);
     return true;
-
 }
 
 struct timeb AI::getStart() const
