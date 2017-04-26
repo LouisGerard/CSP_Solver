@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "common.h"
+#include "backtrack.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,10 +10,11 @@ int main(int argc, char *argv[])
         perror("missing path");
         exit(1);
     }
-    char *read;
-    size_t read_size = read_file(argv[1], &read);
-    parse_grid(read, read_size);
-    parse_cons(read, read_size);
-    free(read);
+
+    setup(argv[1]);
+    if (backtrack())
+        show_grid();
+    else
+        printf("No result !");
     return 0;
 }

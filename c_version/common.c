@@ -4,6 +4,16 @@
 #include <stdbool.h>
 #include "common.h"
 
+
+void setup(char *path)
+{
+    char *read;
+    size_t read_size = read_file(path, &read);
+    parse_grid(read, read_size);
+    parse_cons(read, read_size);
+    free(read);
+}
+
 /**
  * FILE
  **/
@@ -203,7 +213,7 @@ void parse_cons(char *cons_text, size_t text_size)
 
     //copy constraints
     constraints = malloc(constraints_size*sizeof(constraint));
-    memcpy(constraints, constraints_temp, constraints_size);
+    memcpy(constraints, constraints_temp, constraints_size*sizeof(constraint));
 }
 
 /**
@@ -218,7 +228,9 @@ void show_grid()
     }
 }
 
-
+/**
+ * CONSTRAINTS
+ */
 constraint * create_constraint (function f, unsigned size, int * array)
 {
     constraint * constr = (constraint*)malloc(sizeof(constraint));
