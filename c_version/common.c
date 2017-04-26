@@ -80,7 +80,7 @@ void parse_grid(char *grid_text, size_t text_size)
 
 void parse_cons(char *cons_text, size_t text_size)
 {
-    constraint* constraints_temp[grid_size*grid_size];
+    constraint* constraints_temp[grid_size*grid_size];  //todo calculer taille
     constraints_size = 0;
     char *cons_text_cpy = malloc(text_size);
     strcpy(cons_text_cpy, cons_text);
@@ -147,7 +147,6 @@ void parse_cons(char *cons_text, size_t text_size)
                 exit(1);
             }
 
-            ++constraints_size;
             int * array = (int*) malloc(sizeof(int)*4);
             *array = x;
             *(array+1) = y1;
