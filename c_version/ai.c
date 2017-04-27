@@ -160,12 +160,17 @@ bool forward_checking()
         ++iterations_cpt;
         unsigned currentItem = varStack[stackTop];
 
+        int domainSizesCpy[grid_size*grid_size];
+        if (stackTop != nbVars-1)
+            memcpy(&domainSizesCpy, &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
+        else
+            memcpy(&domainSizesCpy, &domainSizes[stackTop], grid_size*grid_size*sizeof(int));
+
         //eval domain
         for (; domainsOffsets[stackTop] < domainSizes[stackTop][currentItem]; ++domainsOffsets[stackTop]) {
             *(grid+currentItem) = *(domains[currentItem]+domainsOffsets[stackTop]);
 
-            if (stackTop != nbVars-1)
-                memcpy(&domainSizes[stackTop], &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
+            memcpy(&domainSizes[stackTop], &domainSizesCpy, grid_size*grid_size*sizeof(int));
 
             if (filter_domains(currentItem,
                                 domains,
