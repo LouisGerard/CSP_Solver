@@ -139,18 +139,7 @@ bool forward_checking()
 
     for (int i = 0; i < grid_size*grid_size; ++i)
         if (*(grid+i) != 0)
-            filter_domains(i, domains, domainSizes[stackTop]);  //todo avoid big fuck up
-//
-/*    show_grid();
-    printf("\n");
-    printf("Domain : ");
-    for (unsigned i = 0; i < grid_size*grid_size; ++i) {
-        for (unsigned d = 0; d < domainSizes[stackTop][i]; ++d) {
-            printf("%d,", domains[i][d]);
-        }
-        printf("\n");
-    }
-    printf("\n");*/
+            filter_domains(i, domains, domainSizes[stackTop]);
 
     while (true) {
         continue_while:
@@ -170,23 +159,6 @@ bool forward_checking()
 
         ++iterations_cpt;
         unsigned currentItem = varStack[stackTop];
-//
-       /* if (currentItem == 24 || currentItem == 18) {
-            show_grid();
-            printf("\n");
-        }*/
-//
-        /*if (currentItem == 24 || currentItem == 18) {
-            printf("Domain :\n");
-            for (unsigned i = 0; i < grid_size*grid_size; ++i) {
-                printf("%d:", i);
-                for (unsigned d = 0; d < domainSizes[stackTop][i]; ++d) {
-                    printf("%d,", domains[i][d]);
-                }
-                printf("\n");
-            }
-            printf("\n");
-        }*/
 
         //eval domain
         for (; domainsOffsets[stackTop] < domainSizes[stackTop][currentItem]; ++domainsOffsets[stackTop]) {
@@ -194,19 +166,6 @@ bool forward_checking()
 
             if (stackTop != nbVars-1)
                 memcpy(&domainSizes[stackTop], &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
-
-
-//
-            /*if (currentItem == 15 && iterations_cpt == 626) {
-                show_grid();
-                printf("Loop s+1 : ");
-                for (unsigned d = 0; d < grid_size; ++d) {
-                    printf("%d,", domains[9][d]);
-                    if (d == domainSizes[stackTop+1][9]-1)
-                        printf("|");
-                }
-                printf("\n\n");
-            }*/
 
             if (filter_domains(currentItem,
                                 domains,
@@ -257,26 +216,6 @@ bool filter_domains(int item,
 
             if (*linkedVal != 0)
                 continue;
-//
-            /*if (item == 15 && linkedItem == 9 && iterations_cpt == 626) {
-                for (unsigned y = 0; y < grid_size; ++y) {
-                    for (unsigned x = 0; x < grid_size; ++x) {
-                        if (y*grid_size+x == linkedItem)
-                            printf("|");
-                        else
-                            printf(" ");
-                        printf("%d", grid[y*grid_size+x]);
-                    }
-                    printf("\n");
-                }
-                printf("Before : ");
-                for (unsigned d = 0; d < grid_size; ++d) {
-                    printf("%d,", domains[linkedItem][d]);
-                    if (d == domSizes[linkedItem]-1)
-                        printf("|");
-                }
-                printf("\n");
-            }*/
 
             for (unsigned d = 0; d < domSizes[linkedItem]; ++d) {
                 ++constraints_cpt;
@@ -291,17 +230,6 @@ bool filter_domains(int item,
                 }
             }
             *linkedVal = 0;
-
-//
-            /*if (item == 15 && linkedItem == 9 && iterations_cpt == 626) {
-                printf("After : ");
-                for (unsigned d = 0; d < grid_size; ++d) {
-                    printf("%d,", domains[linkedItem][d]);
-                    if (d == domSizes[linkedItem]-1)
-                        printf("|");
-                }
-                printf("\n\n");
-            }*/
 
             if (domSizes[linkedItem] == 0)
                 return false;
