@@ -16,4 +16,5 @@ bool filter_domains(int item,
                     int ** domains,
                     int * domSizes);
 
+bool forward_checking_optimized();
 #endif // AI_H

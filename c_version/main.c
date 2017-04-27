@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     }
 
     setup(argv[1]);
-    if (forward_checking())
+    if (forward_checking_optimized())
         show_grid();
     else
         printf("No result !\n");

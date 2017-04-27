@@ -226,7 +226,7 @@ bool filter_domains(int item,
                 ++constraints_cpt;
                 *linkedVal = domains[linkedItem][d];
                 if (!constraints[c]->operation(*val1, *val2)) {
-                    //remove value from domain
+                    //remove value from domain (swap)
                     int temp = domains[linkedItem][d];
                     domains[linkedItem][d] = domains[linkedItem][domSizes[linkedItem]-1];
                     domains[linkedItem][domSizes[linkedItem]-1] = temp;
@@ -241,4 +241,158 @@ bool filter_domains(int item,
         }
     }
     return true;
+}
+
+
+
+bool forward_checking_optimized()
+{
+    printf("Optimized called\n");
+
+    //domains
+    int* defaultDomain = (int*) malloc(grid_size*sizeof(int));
+    for (int i = 1; i <= grid_size; ++i)
+        *(defaultDomain+i-1) = i;
+
+    int* domains[grid_size*grid_size];
+    int domainsOffsets[grid_size*grid_size];
+    for (unsigned i = 0; i < grid_size*grid_size; ++i) {
+        domains[i] = (int*) malloc(grid_size*sizeof(int));
+        memcpy(domains[i], defaultDomain, grid_size*sizeof(int));
+        domainsOffsets[i] = 0;
+    }
+
+    //heuristic -> sort by nb linked constraints
+    //count nb constraints
+    unsigned nb_constraints[grid_size*grid_size];
+    for (unsigned i = 0; i < grid_size*grid_size; ++i)
+        nb_constraints[i] = 0;
+
+    for (unsigned c = 0; c < constraints_size; ++c) {
+        for (unsigned a = 0; a < constraints[c]->size; ++a) {
+            unsigned x1 = *(constraints[c]->array+a*4);
+            unsigned y1 = *(constraints[c]->array+a*4+1);
+            unsigned x2 = *(constraints[c]->array+a*4+2);
+            unsigned y2 = *(constraints[c]->array+a*4+3);
+            int item1 = y1*grid_size+x1;
+            int item2 = y2*grid_size+x2;
+            ++nb_constraints[item1];
+            ++nb_constraints[item2];
+        }
+    }
+
+    unsigned aze[5]; //todo rename
+    unsigned aze_size = 0;
+
+    //vars
+    int varStack[grid_size*grid_size];
+    int stackTop = -1;
+    for (int* item = grid; item-grid < grid_size*grid_size; ++item) {
+        if (*item == 0) {
+            ++stackTop;
+
+            bool index_assigned = false;
+            unsigned aze_index;
+            for (unsigned i = 0; i < aze_size; ++i) {
+                if (index_assigned) {
+                    ++aze[i];
+                    continue;
+                }
+                unsigned stack_pos = aze[i];
+                if (nb_constraints[item-grid] <= nb_constraints[varStack[stack_pos]]) {
+                    aze_index = stack_pos;
+                    if (nb_constraints[item-grid] != nb_constraints[varStack[aze[i]]]) {
+                        unsigned temp[aze_size-i];
+                        memcpy(&temp[0], &aze[i], (aze_size-i)*sizeof(unsigned));
+                        memcpy(&aze[i+1], &temp[0], (aze_size-i)*sizeof(unsigned));
+                        ++aze_size;
+                    }
+                    index_assigned = true;
+                }
+            }
+            if (!index_assigned) {
+                aze_index = stackTop;
+                aze[aze_size++] = stackTop;
+            }
+            else {
+                int temp[stackTop-aze_index];
+                memcpy(&temp[0], &varStack[aze_index], (stackTop-aze_index)*sizeof(int));
+                memcpy(&varStack[aze_index+1], &temp[0], (stackTop-aze_index)*sizeof(int));
+            }
+
+            varStack[aze_index] = item-grid;
+        }
+    }
+
+    //sizes
+    unsigned nbVars = stackTop + 1;
+//
+    /*for (unsigned i = 0; i < nbVars; ++i) {
+        printf("%d avec %d contraintes\n", varStack[i], nb_constraints[varStack[i]]);
+    }
+    printf("\n");*/
+
+    int domainSizes[grid_size*grid_size][grid_size*grid_size];
+    for (unsigned i = 0; i < grid_size*grid_size; ++i) {
+        for (unsigned j = 0; j < grid_size*grid_size; ++j)
+            domainSizes[i][j] = grid_size;
+    }
+
+    printf("Searching...\n");
+    ftime(&start);
+    iterations_cpt = grid_size*grid_size;
+    constraints_cpt = 0;
+
+    for (int i = 0; i < grid_size*grid_size; ++i)
+        if (*(grid+i) != 0)
+            filter_domains(i, domains, domainSizes[stackTop]);
+
+    while (true) {
+        continue_while:
+
+        if (stackTop == -1) {
+            ftime(&stop);
+            for (unsigned i = 0; i < grid_size*grid_size; ++i)
+                free(domains[i]);
+            return true;
+        }
+        if (stackTop == nbVars) {
+            ftime(&stop);
+            for (unsigned i = 0; i < grid_size*grid_size; ++i)
+                free(domains[i]);
+            return false;
+        }
+
+        ++iterations_cpt;
+        unsigned currentItem = varStack[stackTop];
+
+        int domainSizesCpy[grid_size*grid_size];
+        if (stackTop != nbVars-1)
+            memcpy(&domainSizesCpy, &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
+        else
+            memcpy(&domainSizesCpy, &domainSizes[stackTop], grid_size*grid_size*sizeof(int));
+
+        //eval domain
+        for (; domainsOffsets[stackTop] < domainSizes[stackTop][currentItem]; ++domainsOffsets[stackTop]) {
+            *(grid+currentItem) = *(domains[currentItem]+domainsOffsets[stackTop]);
+
+            memcpy(&domainSizes[stackTop], &domainSizesCpy, grid_size*grid_size*sizeof(int));
+
+            if (filter_domains(currentItem,
+                                domains,
+                                domainSizes[stackTop])) {
+                --stackTop;
+                goto continue_while;
+            }
+        }
+
+        //reinit domain
+        domainsOffsets[stackTop] = 0;
+
+        //reinit grid
+        *(grid+currentItem) = 0;
+
+        ++stackTop;
+        ++domainsOffsets[stackTop];
+    }
 }
