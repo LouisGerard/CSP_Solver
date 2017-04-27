@@ -1,5 +1,5 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef CSP_H
+#define CSP_H
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -30,4 +30,4 @@ constraint * create_constraint(function f, unsigned size, int * array);
 bool compareSuperiority(unsigned first, unsigned second);
 bool compareDifference(unsigned first, unsigned second);
 
-#endif // COMMON_H
+#endif // CSP_H

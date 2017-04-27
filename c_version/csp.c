@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "common.h"
+#include "csp.h"
 
 
 void setup(char *path)
@@ -90,7 +90,7 @@ void parse_grid(char *grid_text, size_t text_size)
 
 void parse_cons(char *cons_text, size_t text_size)
 {
-    constraint* constraints_temp[grid_size*grid_size];  //todo calculer taille
+    constraint* constraints_temp[grid_size*(grid_size-1)*2];
     constraints_size = 0;
     char *cons_text_cpy = malloc(text_size);
     strcpy(cons_text_cpy, cons_text);

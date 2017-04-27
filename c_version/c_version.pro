@@ -4,11 +4,11 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.c \
-    common.c \
-    backtrack.c
+    csp.c \
+    ai.c
 
 HEADERS += \
-    common.h \
-    backtrack.h
+    csp.h \
+    ai.h
 
 QMAKE_CFLAGS += -std=c99
