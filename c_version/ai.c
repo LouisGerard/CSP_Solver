@@ -125,8 +125,8 @@ bool forward_checking()
     //sizes
     unsigned nbVars = stackTop + 1;
 
-    int domainSizes[grid_size*grid_size][grid_size*grid_size];
-    for (unsigned i = 0; i < grid_size*grid_size; ++i) {
+    int domainSizes[nbVars+1][grid_size*grid_size];
+    for (unsigned i = 0; i <= nbVars; ++i) {
         for (unsigned j = 0; j < grid_size*grid_size; ++j)
             domainSizes[i][j] = grid_size;
     }
@@ -139,7 +139,7 @@ bool forward_checking()
 
     for (int i = 0; i < grid_size*grid_size; ++i)
         if (*(grid+i) != 0)
-            filter_domains(i, domains, domainSizes[stackTop]);
+            filter_domains(i, domains, domainSizes[stackTop+1]);
 
     while (true) {
         continue_while:
@@ -161,16 +161,12 @@ bool forward_checking()
         unsigned currentItem = varStack[stackTop];
 
         int domainSizesCpy[grid_size*grid_size];
-        if (stackTop != nbVars-1)
-            memcpy(&domainSizesCpy, &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
-        else
-            memcpy(&domainSizesCpy, &domainSizes[stackTop], grid_size*grid_size*sizeof(int));
 
         //eval domain
         for (; domainsOffsets[stackTop] < domainSizes[stackTop][currentItem]; ++domainsOffsets[stackTop]) {
             *(grid+currentItem) = *(domains[currentItem]+domainsOffsets[stackTop]);
 
-            memcpy(&domainSizes[stackTop], &domainSizesCpy, grid_size*grid_size*sizeof(int));
+            memcpy(&domainSizes[stackTop], &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
 
             if (filter_domains(currentItem,
                                 domains,
@@ -236,8 +232,9 @@ bool filter_domains(int item,
             }
             *linkedVal = 0;
 
-            if (domSizes[linkedItem] == 0)
+            if (domSizes[linkedItem] == 0) {
                 return false;
+            }
         }
     }
     return true;
@@ -326,14 +323,9 @@ bool forward_checking_optimized()
 
     //sizes
     unsigned nbVars = stackTop + 1;
-//
-    /*for (unsigned i = 0; i < nbVars; ++i) {
-        printf("%d avec %d contraintes\n", varStack[i], nb_constraints[varStack[i]]);
-    }
-    printf("\n");*/
 
-    int domainSizes[grid_size*grid_size][grid_size*grid_size];
-    for (unsigned i = 0; i < grid_size*grid_size; ++i) {
+    int domainSizes[nbVars+1][grid_size*grid_size];
+    for (unsigned i = 0; i <= nbVars; ++i) {
         for (unsigned j = 0; j < grid_size*grid_size; ++j)
             domainSizes[i][j] = grid_size;
     }
@@ -345,7 +337,7 @@ bool forward_checking_optimized()
 
     for (int i = 0; i < grid_size*grid_size; ++i)
         if (*(grid+i) != 0)
-            filter_domains(i, domains, domainSizes[stackTop]);
+            filter_domains(i, domains, domainSizes[stackTop+1]);
 
     while (true) {
         continue_while:
@@ -366,17 +358,11 @@ bool forward_checking_optimized()
         ++iterations_cpt;
         unsigned currentItem = varStack[stackTop];
 
-        int domainSizesCpy[grid_size*grid_size];
-        if (stackTop != nbVars-1)
-            memcpy(&domainSizesCpy, &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
-        else
-            memcpy(&domainSizesCpy, &domainSizes[stackTop], grid_size*grid_size*sizeof(int));
-
         //eval domain
         for (; domainsOffsets[stackTop] < domainSizes[stackTop][currentItem]; ++domainsOffsets[stackTop]) {
             *(grid+currentItem) = *(domains[currentItem]+domainsOffsets[stackTop]);
 
-            memcpy(&domainSizes[stackTop], &domainSizesCpy, grid_size*grid_size*sizeof(int));
+            memcpy(&domainSizes[stackTop], &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
 
             if (filter_domains(currentItem,
                                 domains,
