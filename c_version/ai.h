@@ -17,4 +17,11 @@ bool filter_domains(int item,
                     int * domSizes);
 
 bool forward_checking_optimized();
+bool filter_domains_with_evidences(int item,
+                                   int ** domains,
+                                   int * domSizes,
+                                   int *evidences,
+                                   unsigned *evidences_size,
+                                   bool *is_evident);
+
 #endif // AI_H

@@ -278,16 +278,24 @@ bool forward_checking_optimized()
         }
     }
 
-    unsigned aze[5]; //todo rename
+    //evidences
+    int evidences[grid_size*grid_size];
+    unsigned evidences_size = 0;
+    bool is_evident[grid_size*grid_size];
+
+    //todo find name (ideas : sorter)
+    unsigned aze[5];
     unsigned aze_size = 0;
 
     //vars
     int varStack[grid_size*grid_size];
     int stackTop = -1;
     for (int* item = grid; item-grid < grid_size*grid_size; ++item) {
+        is_evident[item-grid] = false;
         if (*item == 0) {
             ++stackTop;
 
+            //sort
             bool index_assigned = false;
             unsigned aze_index;
             for (unsigned i = 0; i < aze_size; ++i) {
@@ -337,7 +345,7 @@ bool forward_checking_optimized()
 
     for (int i = 0; i < grid_size*grid_size; ++i)
         if (*(grid+i) != 0)
-            filter_domains(i, domains, domainSizes[stackTop+1]);
+            filter_domains_with_evidences(i, domains, domainSizes[stackTop + 1], evidences, &evidences_size, is_evident);
 
     while (true) {
         continue_while:
@@ -358,15 +366,39 @@ bool forward_checking_optimized()
         ++iterations_cpt;
         unsigned currentItem = varStack[stackTop];
 
+//
+        if (evidences_size > 0) {
+            show_grid();
+            printf("Domains : \n");
+            for (unsigned i = 0; i < grid_size * grid_size; ++i) {
+                printf("%d: ", i);
+                for (unsigned d = 0; d < grid_size; ++d) {
+                    printf("%d,", domains[i][d]);
+                    if (d == domainSizes[stackTop + 1][i] - 1)
+                        printf("|");
+                }
+                printf("\n");
+            }
+            printf("Evidences : ");
+            for (unsigned i = 0; i < evidences_size; ++i) {
+                printf("%d,", evidences[i]);
+            }
+            printf("\n");
+            printf("\n");
+        }
+
         //eval domain
         for (; domainsOffsets[stackTop] < domainSizes[stackTop][currentItem]; ++domainsOffsets[stackTop]) {
             *(grid+currentItem) = *(domains[currentItem]+domainsOffsets[stackTop]);
 
             memcpy(&domainSizes[stackTop], &domainSizes[stackTop+1], grid_size*grid_size*sizeof(int));
 
-            if (filter_domains(currentItem,
+            if (filter_domains_with_evidences(currentItem,
                                 domains,
-                                domainSizes[stackTop])) {
+                                domainSizes[stackTop],
+                                evidences,
+                                &evidences_size,
+                                is_evident)) {
                 --stackTop;
                 goto continue_while;
             }
@@ -381,4 +413,70 @@ bool forward_checking_optimized()
         ++stackTop;
         ++domainsOffsets[stackTop];
     }
+}
+
+bool filter_domains_with_evidences(int item,
+                    int ** domains,
+                    int * domSizes,
+                    int *evidences,
+                    unsigned *evidences_size,
+                    bool *is_evident)
+{
+    int *linkedVal;
+    int evidences_cpy[grid_size*grid_size];
+    memcpy(&evidences_cpy[0], &evidences[0], *evidences_size*sizeof(int));
+    unsigned evidences_cpy_size = *evidences_size;
+    for (unsigned c = 0; c < constraints_size; ++c) {
+        for (unsigned a = 0; a < constraints[c]->size; ++a) {
+            unsigned x1 = *(constraints[c]->array+a*4);
+            unsigned y1 = *(constraints[c]->array+a*4+1);
+            unsigned x2 = *(constraints[c]->array+a*4+2);
+            unsigned y2 = *(constraints[c]->array+a*4+3);
+            int item1 = y1*grid_size+x1;
+            int item2 = y2*grid_size+x2;
+            int linkedItem;
+            int *val1 = grid+item1;
+            int *val2 = grid+item2;
+
+            if (item != item1) {
+                if (item != item2)
+                    continue;
+                linkedItem = item1;
+                linkedVal = val1;
+            }
+            else {
+                linkedItem = item2;
+                linkedVal = val2;
+            }
+
+            if (*linkedVal != 0)
+                continue;
+
+            for (unsigned d = 0; d < domSizes[linkedItem]; ++d) {
+                ++constraints_cpt;
+                *linkedVal = domains[linkedItem][d];
+                if (!constraints[c]->operation(*val1, *val2)) {
+                    //remove value from domain (swap)
+                    int temp = domains[linkedItem][d];
+                    domains[linkedItem][d] = domains[linkedItem][domSizes[linkedItem]-1];
+                    domains[linkedItem][domSizes[linkedItem]-1] = temp;
+                    --domSizes[linkedItem];
+                    --d;
+                }
+            }
+            *linkedVal = 0;
+
+            if (domSizes[linkedItem] == 0) {
+                return false;
+            }
+
+            if (domSizes[linkedItem] == 1 && !is_evident[linkedItem]) {
+                is_evident[linkedItem] = true;
+                evidences_cpy[evidences_cpy_size++] = linkedItem;
+            }
+        }
+    }
+    memcpy(&evidences[0], &evidences_cpy[0], evidences_cpy_size*sizeof(int));
+    *evidences_size = evidences_cpy_size;
+    return true;
 }
