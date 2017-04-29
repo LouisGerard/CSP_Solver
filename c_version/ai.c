@@ -160,8 +160,6 @@ bool forward_checking()
         ++iterations_cpt;
         unsigned currentItem = varStack[stackTop];
 
-        int domainSizesCpy[grid_size*grid_size];
-
         //eval domain
         for (; domainsOffsets[stackTop] < domainSizes[stackTop][currentItem]; ++domainsOffsets[stackTop]) {
             *(grid+currentItem) = *(domains[currentItem]+domainsOffsets[stackTop]);
