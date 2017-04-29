@@ -20,5 +20,9 @@ int main(int argc, char *argv[])
                                  + (stop.millitm - start.millitm)));
     printf("Iterations : %d\n", iterations_cpt);
     printf("Constraints : %d\n", constraints_cpt);
+
+    free(grid);
+    for (unsigned i = 0; i < constraints_size; ++i)
+        free(constraints[i]);
     return 0;
 }
