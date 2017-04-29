@@ -189,7 +189,6 @@ bool filter_domains(int item,
                     int ** domains,
                     int * domSizes)
 {
-    int *linkedVal;
     for (unsigned c = 0; c < constraints_size; ++c) {
         for (unsigned a = 0; a < constraints[c]->size; ++a) {
             unsigned x1 = *(constraints[c]->array+a*4);
@@ -199,6 +198,7 @@ bool filter_domains(int item,
             int item1 = y1*grid_size+x1;
             int item2 = y2*grid_size+x2;
             int linkedItem;
+            int *linkedVal;
             int *val1 = grid+item1;
             int *val2 = grid+item2;
 
